@@ -1,0 +1,18 @@
+{
+  "jolpica": {
+    "commit": "146152c84af4f5351a63461c00734ae8f041cc71",
+    "sourceUrl": "https://github.com/jolpica/jolpica-f1/blob/146152c84af4f5351a63461c00734ae8f041cc71/TERMS.md",
+    "sha256": "2c196c2ec2faa87b75cf77344f8af78c0a0d122f0844b53b3e764c05427ffdda",
+    "scope": "API data terms, not software license",
+    "retrievedAt": "2026-10-09"
+  },
+  "f1db": {
+    "version": "v2026.16.0",
+    "authors": "F1DB contributors",
+    "license": "CC-BY-4.0",
+    "sourceUrl": "https://github.com/f1db/f1db/blob/v2026.16.0/LICENSE",
+    "file": "F1DB-v2026.16.0-LICENSE.txt",
+    "sha256": "9e5f1b3c610b9c2da5c313bf81d577a7d1acec686bdb0384edefa6df0f90cd94",
+    "transformations": "pole extraction, internal ID mapping, race and identity review, derived totals; mixed factual outputs withheld locally"
+  }
+}

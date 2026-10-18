@@ -1,0 +1,14 @@
+-- Administrator-reviewed template only. NOT executed against the development DB.
+-- Set passwords interactively with psql \password, never include them in this file.
+CREATE ROLE f1_app LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
+CREATE ROLE f1_backup LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT;
+GRANT CONNECT ON DATABASE f1_driver_guess TO f1_app, f1_backup;
+GRANT USAGE ON SCHEMA public TO f1_app, f1_backup;
+GRANT SELECT ON drivers, driver_aliases, constructors, constructor_aliases,
+    driver_stats, dataset_versions, driver_career_timelines TO f1_app;
+GRANT SELECT, INSERT, UPDATE ON game_sessions TO f1_app;
+GRANT SELECT, INSERT ON game_guesses TO f1_app;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO f1_backup;
+GRANT USAGE ON SCHEMA drizzle TO f1_backup;
+GRANT SELECT ON ALL TABLES IN SCHEMA drizzle TO f1_backup;
+-- Maintenance owner remains separate. Repeat reviewed backup grants after migrations.

@@ -1,0 +1,6 @@
+Project-authored attribution and scope record (not an upstream NOTICE file):
+@humanfs/types 0.15.0, by Nicholas C. Zakas.
+Exact release gitHead: 85069f193cbacc371c3beb649ce746f8c5a493be
+Repository-wide declaration: https://github.com/humanwhocodes/humanfs/blob/85069f193cbacc371c3beb649ce746f8c5a493be/README.md
+Package declaration: https://github.com/humanwhocodes/humanfs/blob/85069f193cbacc371c3beb649ce746f8c5a493be/packages/types/README.md
+Both declarations specify Apache 2.0. Complete canonical text retained from same-commit packages/core/LICENSE.

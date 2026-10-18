@@ -1,0 +1,291 @@
+{
+  "reviewDate": "2026-10-09",
+  "scope": "Nine initially missing installed release licenses; no dependency upgrades",
+  "records": [
+    {
+      "name": "@drizzle-team/brocli",
+      "version": "0.10.2",
+      "declaredLicense": "Apache-2.0",
+      "status": "confirmed",
+      "registryUrl": "https://registry.npmjs.org/%40drizzle-team%2Fbrocli/0.10.2",
+      "archiveIntegrity": "sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==",
+      "archiveIntegrityVerified": true,
+      "repository": "git+https://github.com/drizzle-team/brocli.git",
+      "reason": "Official registry provenance links the exact SHA512 archive to fixed commit 65d1432f4ce1f048d99604acd60d0eab8612c91b. Its package manifest matches name/version/license and complete Apache text is retained; no LICENSE from current main used. Registry provenance read over HTTPS, not independently Sigstore verified.",
+      "commit": "65d1432f4ce1f048d99604acd60d0eab8612c91b",
+      "manifestSha256": "e31fb1484547591a3ad6c42d0665b57eef7dc02777426c54d6cc06cf7fb55b58",
+      "provenanceUrl": "https://registry.npmjs.org/-/npm/v1/attestations/@drizzle-team%2fbrocli@0.10.2",
+      "provenanceSha256": "6452114c3c097b92101f22a4dbde430c0255e4a55da95e08cc3bba5a68e519a1",
+      "provenanceSignatureIndependentlyVerified": false
+    },
+    {
+      "name": "@humanfs/types",
+      "version": "0.15.0",
+      "declaredLicense": "Apache-2.0",
+      "status": "confirmed",
+      "registryUrl": "https://registry.npmjs.org/%40humanfs%2Ftypes/0.15.0",
+      "archiveIntegrity": "sha512-ZZ1w0aoQkwuUuC7Yf+7sdeaNfqQiiLcSRbfI08oAxqLtpXQr9AIVX7Ay7HLDuiLYAaFPu8oBYNq/QIi9URHJ3Q==",
+      "archiveIntegrityVerified": true,
+      "repository": "git+https://github.com/humanwhocodes/humanfs.git",
+      "commit": "85069f193cbacc371c3beb649ce746f8c5a493be",
+      "observations": [
+        {
+          "path": "packages/types/README.md",
+          "status": 200,
+          "sha256": "e1076e47ea96eef79e05496912ad03a9fa8031e1bf4847aab1a9554aef5cc5c0"
+        },
+        {
+          "path": "packages/types/package.json",
+          "status": 200,
+          "sha256": "1b849aa49814883fc0e70ca461c9faccb675ed1c801e784f1858e75e3b36eec5"
+        },
+        {
+          "path": "packages/core/LICENSE",
+          "status": 200,
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ],
+      "reason": "Exact npm gitHead has matching types package version. Both types README and repository-wide monorepo README explicitly declare Apache 2.0. The complete canonical Apache text is preserved from core/LICENSE at the same commit; scope is corroborated by the global declaration, not inferred solely from a neighboring file or SPDX.",
+      "rootDeclarationSha256": "c63f4f64e9151683d2223b9388ff69a9132f4c2336168d69b26e38471c8b0d73",
+      "rootDeclarationUrl": "https://github.com/humanwhocodes/humanfs/blob/85069f193cbacc371c3beb649ce746f8c5a493be/README.md"
+    },
+    {
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.12",
+      "declaredLicense": "MIT",
+      "status": "confirmed",
+      "registryUrl": "https://registry.npmjs.org/%40rolldown%2Fbinding-win32-x64-msvc/1.2.12",
+      "archiveIntegrity": "sha512-WIw2haVKwjuYdXkHaoC0mF8Le71TuCBxjrdKqLbJGctbBABj+ClfmNvtbOnzpq3RokNo5+V1qhtSzJyXorsklQ==",
+      "archiveIntegrityVerified": true,
+      "repository": "git+https://github.com/rolldown/rolldown.git",
+      "commit": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "tag": "v1.2.12",
+      "observations": [
+        {
+          "path": "LICENSE",
+          "status": 200,
+          "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734"
+        },
+        {
+          "path": "packages/rolldown/LICENSE",
+          "status": 404
+        },
+        {
+          "path": "packages/rolldown/package.json",
+          "status": 200,
+          "sha256": "54388c2ff9b24a9715461e7da3154de6d8ffeee6a84d20e0bc390989ae496dbd"
+        },
+        {
+          "path": "THIRD-PARTY-LICENSE",
+          "status": 200,
+          "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c"
+        }
+      ],
+      "reason": "Exact release reference, matching version manifest, complete repository license and applicable third-party notices retained."
+    },
+    {
+      "name": "abstract-logging",
+      "version": "2.0.1",
+      "declaredLicense": "MIT",
+      "status": "pending",
+      "registryUrl": "https://registry.npmjs.org/abstract-logging/2.0.1",
+      "archiveIntegrity": "sha512-2BjRTZxTPvheOvGbBslFSYOUkr+SjPtOnrLP33f+VIWLzezQpZcqVg7ja3L4dBXmzzgwT+a029jRx5PCi3JuiA==",
+      "archiveIntegrityVerified": true,
+      "repository": "git+https://github.com/jsumners/abstract-logging.git",
+      "commit": "80dfaef91ee87008f4ed2b6e78921d383bccd406",
+      "observations": [
+        {
+          "path": "LICENSE",
+          "status": 404
+        },
+        {
+          "path": "LICENSE.md",
+          "status": 404
+        },
+        {
+          "path": "Readme.md",
+          "status": 200,
+          "sha256": "e1a86711fb5055c0e66901276b7d2c843554bf5f1dab218c069c8b9d17148e81"
+        },
+        {
+          "path": "README.md",
+          "status": 404
+        },
+        {
+          "path": "package.json",
+          "status": 200,
+          "sha256": "33f6c3a8ec869b76fba4173cd688d1865ae74d746cc3f3b5d85abf9f40ab4038"
+        }
+      ],
+      "reason": "Exact release README incorporates the author MIT URL, but no complete text in the archive or pinned tree. Need the incorporated author license and traceable copyright scope. Referenced author URL retrieved, but it now generates copyright year 2026; no immutable release-era full grant confirmed, so remains pending."
+    },
+    {
+      "name": "boolbase",
+      "version": "1.0.0",
+      "declaredLicense": "ISC",
+      "status": "pending",
+      "registryUrl": "https://registry.npmjs.org/boolbase/1.0.0",
+      "archiveIntegrity": "sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==",
+      "archiveIntegrityVerified": true,
+      "repository": "https://github.com/fb55/boolbase",
+      "reason": "Exact 1.0.0 archive declares ISC only, with no complete text/gitHead/exact tag; v2.0.0 is not a substitute."
+    },
+    {
+      "name": "drizzle-kit",
+      "version": "0.31.11",
+      "declaredLicense": "MIT",
+      "status": "conflict",
+      "registryUrl": "https://registry.npmjs.org/drizzle-kit/0.31.11",
+      "archiveIntegrity": "sha512-YCYqxTLIB2OCqf6w9/Vef13baBVbwQIPcbT4Y56AfO6B9ajZhDhD8Jkveg/hJvT/iuMloKD/IYYkyMMNhr7Kqg==",
+      "archiveIntegrityVerified": true,
+      "repository": "git+https://github.com/drizzle-team/drizzle-orm.git",
+      "commit": "15454dbe49d827c6081f3d0231e2e7985e517295",
+      "tag": "drizzle-kit@0.31.11",
+      "observations": [
+        {
+          "path": "drizzle-kit/LICENSE",
+          "status": 404
+        },
+        {
+          "path": "drizzle-kit/package.json",
+          "status": 200,
+          "sha256": "7e2f9e78650d4d55f2fd40e273a68e0bf8c6dc3eee7ab386e09a608628fe097a"
+        },
+        {
+          "path": "LICENSE",
+          "status": 200,
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ],
+      "reason": "Pinned 0.31.11 package declares MIT, while the repository root full text is Apache-2.0. No kit-specific full MIT text was found. Need publisher clarification or release-specific MIT evidence."
+    },
+    {
+      "name": "drizzle-orm",
+      "version": "0.45.3",
+      "declaredLicense": "Apache-2.0",
+      "status": "confirmed",
+      "registryUrl": "https://registry.npmjs.org/drizzle-orm/0.45.3",
+      "archiveIntegrity": "sha512-CAloER21cDdcgZ1OmjrZX82EeRNsdP+y0onX/eyoYDaYzki/adrAa91lzM5jWh7zZPK4qUbw/6LGv9J+A+uizA==",
+      "archiveIntegrityVerified": true,
+      "repository": "git+https://github.com/drizzle-team/drizzle-orm.git",
+      "commit": "15454dbe49d827c6081f3d0231e2e7985e517295",
+      "tag": "0.45.3",
+      "observations": [
+        {
+          "path": "drizzle-orm/LICENSE",
+          "status": 404
+        },
+        {
+          "path": "drizzle-orm/package.json",
+          "status": 200,
+          "sha256": "f7bd5e3da4fff4d579371019c62ef89c6a6d650dda96d30d021e80cf2ce6955e"
+        },
+        {
+          "path": "LICENSE",
+          "status": 200,
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ],
+      "reason": "Exact release reference, matching version manifest, complete repository license and applicable third-party notices retained."
+    },
+    {
+      "name": "natural-compare",
+      "version": "1.4.0",
+      "declaredLicense": "MIT",
+      "status": "confirmed",
+      "registryUrl": "https://registry.npmjs.org/natural-compare/1.4.0",
+      "archiveIntegrity": "sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==",
+      "archiveIntegrityVerified": true,
+      "repository": "git://github.com/litejs/natural-compare-lite.git",
+      "commit": "eec83eee67cfac84d6db30cdd65363f155673770",
+      "observations": [
+        {
+          "path": "LICENSE",
+          "status": 404
+        },
+        {
+          "path": "LICENSE.md",
+          "status": 404
+        },
+        {
+          "path": "Readme.md",
+          "status": 404
+        },
+        {
+          "path": "README.md",
+          "status": 200,
+          "sha256": "9a97891a8e69da238853b1a512ae6ea8797072e9aad5bb25449b798deaab986e"
+        },
+        {
+          "path": "package.json",
+          "status": 200,
+          "sha256": "ab94d809422924d57c838565a9162115ef14d9ae2b56fe7a0f215e2aff807739"
+        }
+      ],
+      "reason": "Exact npm gitHead README identifies version 1.4.0, release copyright and explicitly incorporates the author MIT URL. Complete text fetched from that referenced author URL on 2026-10-09, SHA256 retained; original release copyright retained in separate NOTICE. Author endpoint is not immutable; captured evidence is hash-pinned, no main substitution."
+    },
+    {
+      "name": "stackback",
+      "version": "0.0.2",
+      "declaredLicense": "MIT",
+      "status": "pending",
+      "registryUrl": "https://registry.npmjs.org/stackback/0.0.2",
+      "archiveIntegrity": "sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==",
+      "archiveIntegrityVerified": true,
+      "repository": "git://github.com/shtylman/node-stackback.git",
+      "commit": "2963095372abf7b75ba55f01cef08ab1e62c2ff4",
+      "tag": "v0.0.2",
+      "observations": [
+        {
+          "path": "LICENSE",
+          "status": 404
+        },
+        {
+          "path": "LICENSE.md",
+          "status": 404
+        },
+        {
+          "path": "Readme.md",
+          "status": 404
+        },
+        {
+          "path": "README.md",
+          "status": 200,
+          "sha256": "0ac49857291755487f92130e4e2eec3e88b8012a7e42a6549763929ba4e6a4e5"
+        },
+        {
+          "path": "package.json",
+          "status": 200,
+          "sha256": "de9168ece7ce11c0a933ee447dd907da610f1745e6dd418d7f6b23c91e29bd7c"
+        }
+      ],
+      "reason": "Exact v0.0.2 package declares MIT; archive and pinned tree lack full text/copyright grant. Need release-specific complete license from publisher. Embedded formatstack.js carries a complete V8 BSD-3-Clause grant; retained separately, without treating it as the missing package-wide MIT grant."
+    },
+    {
+      "name": "@vue/devtools-api",
+      "version": "6.6.4",
+      "declaredLicense": "MIT",
+      "status": "confirmed",
+      "commit": "dd2ab5d4275187cbd81952a2a3d53c335643c1f4",
+      "tag": "v6.6.4",
+      "manifestSha256": "16103b215db2ade43369020415869db5f7e89158c2c07524ef8fb5c8d71864cf",
+      "reason": "Per-version inventory exposed this missing older release. Exact v6.6.4 tag has matching API and root version manifests and complete root MIT text. npm gitHead manifest was 6.6.3 and was not used as the matching tag proof."
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.12",
+      "declaredLicense": "MIT",
+      "status": "confirmed",
+      "registryUrl": "https://registry.npmjs.org/%40rolldown%2Fbinding-linux-x64-gnu/1.2.12",
+      "archiveIntegrity": "sha512-Q9uLBO53Xd4QIq1WOycVQyPP1O4HhraEV2qqb3uTrnVw6QZih9duY4vNXOivL1xoUS1/z+W8eF4NMfl2a8Sdjw==",
+      "archiveIntegrityVerified": true,
+      "archiveSha256": "18c402a07284684a098becb29e4ca95c9bc67ebc161c0d8acce477c02bc21207",
+      "repository": "git+https://github.com/rolldown/rolldown.git",
+      "commit": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "provenanceUrl": "https://registry.npmjs.org/-/npm/v1/attestations/@rolldown%2fbinding-linux-x64-gnu@1.2.12",
+      "provenanceSha256": "e6c9d401c72112d3d244f29534b23a390f8fc81d03a16bc5cb342c90c6ecebdf",
+      "provenanceSignatureIndependentlyVerified": false,
+      "reason": "Official registry provenance over HTTPS links the exact verified SHA512 Linux archive to the same immutable source commit as reviewed rolldown 1.2.12. The complete repository MIT and third-party notices from that commit are retained for this binary package. No main or different-version license substituted; Sigstore signature not independently verified."
+    }
+  ]
+}

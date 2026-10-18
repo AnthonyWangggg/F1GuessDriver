@@ -1,0 +1,13 @@
+{
+  "name": "abstract-logging",
+  "version": "0.0.0-f1-original.1",
+  "private": true,
+  "description": "Original silent logger implementing the public Fastify logging interface",
+  "license": "MIT",
+  "main": "index.cjs",
+  "files": [
+    "index.cjs",
+    "LICENSE",
+    "README.md"
+  ]
+}

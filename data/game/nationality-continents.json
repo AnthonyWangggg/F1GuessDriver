@@ -1,0 +1,190 @@
+{
+  "policy": "UN M49宏观地理分组，Americas按Northern America/Central America/Caribbean合为NorthAmerica，SouthAmerica独立；Russia依M49归Europe。历史代码独立登记，不改国籍或旗帜。未审核代码与跨洲历史SUN/USSR不进行同洲比较。",
+  "reviewedAt": "2026-10-09",
+  "modern": {
+    "AUT": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "BEL": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "CHE": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "CZE": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "DEU": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "DNK": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "ESP": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "FIN": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "FRA": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "GBR": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "HUN": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "IRL": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "ITA": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "LIE": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "MCO": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "NLD": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "POL": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "PRT": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "RUS": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "SWE": {
+      "continent": "Europe",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "CHN": {
+      "continent": "Asia",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "IDN": {
+      "continent": "Asia",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "IND": {
+      "continent": "Asia",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "JPN": {
+      "continent": "Asia",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "MYS": {
+      "continent": "Asia",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "THA": {
+      "continent": "Asia",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "ZAF": {
+      "continent": "Africa",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "CAN": {
+      "continent": "NorthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "MEX": {
+      "continent": "NorthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "USA": {
+      "continent": "NorthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "ARG": {
+      "continent": "SouthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "BRA": {
+      "continent": "SouthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "CHL": {
+      "continent": "SouthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "COL": {
+      "continent": "SouthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "URY": {
+      "continent": "SouthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "VEN": {
+      "continent": "SouthAmerica",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "AUS": {
+      "continent": "Oceania",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    },
+    "NZL": {
+      "continent": "Oceania",
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/overview"
+    }
+  },
+  "historical": {
+    "DDR": {
+      "continent": "Europe",
+      "sourceUrl": "https://www.britannica.com/place/Germany",
+      "reason": "历史东德位于欧洲；代码保留DDR，非DEU替换。"
+    },
+    "RHO": {
+      "continent": "Africa",
+      "sourceUrl": "https://en.wikisource.org/wiki/1911_Encyclop%C3%A6dia_Britannica/Rhodesia",
+      "reason": "历史罗得西亚位于南部非洲，代码保留。"
+    },
+    "CSK": {
+      "continent": "Europe",
+      "sourceUrl": "https://www.britannica.com/place/Czechoslovakia",
+      "reason": "历史捷克斯洛伐克位于欧洲。"
+    },
+    "YUG": {
+      "continent": "Europe",
+      "sourceUrl": "https://www.britannica.com/place/Yugoslavia",
+      "reason": "历史南斯拉夫位于欧洲。"
+    },
+    "SUN": {
+      "continent": null,
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/",
+      "reason": "跨洲历史身份，本阶段不裁定。"
+    },
+    "USSR": {
+      "continent": null,
+      "sourceUrl": "https://unstats.un.org/unsd/methodology/m49/",
+      "reason": "跨洲历史身份，本阶段不裁定。"
+    }
+  }
+}

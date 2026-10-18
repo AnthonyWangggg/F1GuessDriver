@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "release-tools/rolling",
+    "rootDir": "scripts",
+    "types": ["node"]
+  },
+  "include": ["scripts/deploy.ts", "scripts/lib/rolling.ts", "scripts/lib/rolling-host.ts"]
+}

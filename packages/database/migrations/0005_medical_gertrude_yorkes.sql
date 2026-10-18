@@ -1,0 +1,3 @@
+ALTER TABLE "dataset_versions" ADD CONSTRAINT "dataset_version_rules_uq" UNIQUE("version","rules_version");--> statement-breakpoint
+ALTER TABLE "game_sessions" ADD CONSTRAINT "game_dataset_rules_fk" FOREIGN KEY ("dataset_version","rules_version") REFERENCES "public"."dataset_versions"("version","rules_version") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dataset_versions" ADD CONSTRAINT "dataset_rules_check" CHECK ("dataset_versions"."rules_version" IN ('v1','v2') AND ("dataset_versions"."rules_version"='v1' OR "dataset_versions"."pole_audit_id" IS NOT NULL));

@@ -1,0 +1,51 @@
+[
+  {
+    "file": "apps/server/node_modules/.pnpm/@pinojs+redact@0.4.0/node_modules/@pinojs/redact/test/actual-redact-comparison.test.js",
+    "sha256": "4e8b9a2727cbf1c230eb35770395963a95855ec5d432abdb75add62aafe5e596",
+    "rules": ["embedded-secret"],
+    "reason": "Published redaction unit-test input and equality assertions; synthetic password example, not an application credential.",
+    "sourceUrl": "https://github.com/pinojs/redact"
+  },
+  {
+    "file": "apps/server/node_modules/.pnpm/dotenv@17.4.2/node_modules/dotenv/README-es.md",
+    "sha256": "ab9ead3242d473bd551044ac448b5cfc761496a5351bf0895d98fd7277e4da51",
+    "rules": ["private-key"],
+    "reason": "Published dotenv documentation examples: illustrative multiline private-key markers, dummy assignment or instructional text. Not a deployable project key; file is unchanged from the installed distribution.",
+    "sourceUrl": "https://github.com/motdotla/dotenv"
+  },
+  {
+    "file": "apps/server/node_modules/.pnpm/dotenv@17.4.2/node_modules/dotenv/README.md",
+    "sha256": "5d8a19bc75307f6c3a4b805f1693be379c2c236f3795d759fe20f6a74fe61b5b",
+    "rules": ["private-key", "embedded-secret"],
+    "reason": "Published dotenv documentation examples: illustrative multiline private-key markers, dummy assignment or instructional text. Not a deployable project key; file is unchanged from the installed distribution.",
+    "sourceUrl": "https://github.com/motdotla/dotenv"
+  },
+  {
+    "file": "apps/server/node_modules/.pnpm/dotenv@17.4.2/node_modules/dotenv/skills/dotenv/SKILL.md",
+    "sha256": "9737515fe845de8abf87bbcb9e04d47f17422f3c92fcc6c913482171e50fc5f9",
+    "rules": ["embedded-secret"],
+    "reason": "Published dotenv documentation examples: illustrative multiline private-key markers, dummy assignment or instructional text. Not a deployable project key; file is unchanged from the installed distribution.",
+    "sourceUrl": "https://github.com/motdotla/dotenv"
+  },
+  {
+    "file": "apps/server/node_modules/.pnpm/dotenv@17.4.2/node_modules/dotenv/skills/dotenvx/SKILL.md",
+    "sha256": "7fe24d82a32afcf0ba9cde91e9af4e855c659d7813a6f0dca155367ccba42888",
+    "rules": ["embedded-secret"],
+    "reason": "Published dotenv documentation examples: illustrative multiline private-key markers, dummy assignment or instructional text. Not a deployable project key; file is unchanged from the installed distribution.",
+    "sourceUrl": "https://github.com/motdotla/dotenv"
+  },
+  {
+    "file": "apps/server/node_modules/.pnpm/pg-connection-string@2.14.1/node_modules/pg-connection-string/README.md",
+    "sha256": "c2cba494f78d950f91ec21298bbf60a949dc379d4f873ffe3ee319c918a175e0",
+    "rules": ["database-credential"],
+    "reason": "Published node-postgres documentation showing connection-string parsing and pool configuration with illustrative user/password placeholders, not project connection values.",
+    "sourceUrl": "https://github.com/brianc/node-postgres"
+  },
+  {
+    "file": "apps/server/node_modules/.pnpm/pg-pool@3.14.0_pg@8.23.1/node_modules/pg-pool/README.md",
+    "sha256": "9d7028ff70e7cddeb97e7a2fda222e12c0e52fe954baf640d62d29880d9628bb",
+    "rules": ["database-credential"],
+    "reason": "Published node-postgres documentation showing connection-string parsing and pool configuration with illustrative user/password placeholders, not project connection values.",
+    "sourceUrl": "https://github.com/brianc/node-postgres"
+  }
+]

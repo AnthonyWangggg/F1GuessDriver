@@ -1,0 +1,4 @@
+# Review with visudo -cf. Controller and every ancestor/import must be root-owned, non-writable.
+# Exact argument validation is performed again inside deploy.js.
+f1deploy ALL=(root) NOPASSWD: /usr/local/sbin/f1guessdriver-release
+# Do not grant systemctl, nginx, shell, node, tar, cp, chown, or package-manager sudo.

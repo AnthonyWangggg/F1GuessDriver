@@ -1,0 +1,230 @@
+{
+  "reviewDate": "2026-10-09",
+  "ownerScopeApproval": "not-granted",
+  "records": [
+    {
+      "file": "data/aliases/drivers.zh-reviews.json",
+      "status": "original-config",
+      "sources": [
+        "Authored display-only review decisions; factual name references retained per decision, not a licence over source publications"
+      ],
+      "reason": "Unsigned review candidate. No historical record changes or owner approval. Withdrawn labels must not re-enter display/search.",
+      "sha256": "b5fa6b9f491673b578f286dbc3bcac11d41c13953f876476fe6174c35b39e29a"
+    },
+    {
+      "file": "packages/shared/src/localization-catalog.ts",
+      "sha256": "0b1490a3e10de514d26cba126e406e4428777a00cfd9a561f2f5d83c801ba7ee",
+      "status": "attributed-resource",
+      "sources": [
+        "Wikidata structured Chinese labels (CC0); exact Q IDs, original identity URLs and resolved identity URLs retained per record",
+        "FIA 2024 Chinese GP media kit page 24 and LEGO Chinese Senna/McLaren booklet: name facts only, no prose, artwork or licence over the source publications",
+        "Existing three owner-reviewed names; project-selected search aliases and simplified character conversion",
+        "Closeout: 12 labels quarantined, 17 mainland name facts checked against community driver list, 2 name facts checked against Xinhua reports; no prose, images or source tables copied"
+      ],
+      "reason": "Local review candidate only. Community labels are not official translations. See docs/localization.md and apps/web/public/LOCALIZATION-NOTICE.txt. Existing historical-data rights, deferred issues and exact-candidate owner approval remain unchanged; no public release approval granted."
+    },
+    {
+      "file": "data/aliases/drivers.zh.json",
+      "sha256": "a37b84597eeb16805e46335a4a6d30971620881e64164ee59ea13157dc780a03",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/game/SOURCES.md",
+      "sha256": "fa1e9810b3a288b304faddb7d40ce72a9cf41bf55164111b83fc0e6e046dca3e",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/game/beginner-legends.json",
+      "sha256": "400455210d7ee2be4ebe74549e7d6bb775d6e9a86a5d3a171da6a21964b198c4",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/game/nationality-continents.json",
+      "sha256": "f912004a2c17e12e7ae8473d671726deeca910bc1e21d3e87de9701abb9963ed",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/mappings/constructors.json",
+      "sha256": "ba19afd1baf208155f22ed4fb394219250b8da444b4c96b9d3be988a62e72249",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/mappings/f1db-drivers.json",
+      "sha256": "876642004cbacdc8d3b3ae86fbbee78177bc1196c5f9505d41df4dfc23034d1d",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/poles/SOURCES.md",
+      "sha256": "e6c5975794c6e6291dccfd2548468420ebf9bf2b8916da4baea85540334169d7",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/poles/identity-reviews.json",
+      "sha256": "5df77a6f815ad3f7db08a627e9b724485a381e94ed2efa8e5c0389cc7c9e09a0",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/poles/race-reviews.json",
+      "sha256": "bf3ab9f5dbb27e84d93949d74c2193df622cafd8713ce3350a6d9e84aa5c102e",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/poles/reference-checks.json",
+      "sha256": "60132bd8f5b72250189dd1ecf3a9b82594c16196bf9fe99cbd0b01c5243c487b",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/reference-checks.json",
+      "sha256": "0d5ed480cb0babb43b04b64239a8e941302ea3cd4ad00b63e7d053ee340669ca",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/reviews/SOURCES.md",
+      "sha256": "50c82660af829c0d8c01b7914a631d8d7fba39abcd1a0fac8041af9b608eace9",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/reviews/manual-results.json",
+      "sha256": "f333c04f2497983a4e0a631af49e3af209f6c7a448b398926696f19e66726935",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/reviews/race-results.json",
+      "sha256": "6fb2c4bd1ba14aa2d123d50f1ce59e054a2406d104df3b23850f3d142a8c5326",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "data/security/dependency-example-reviews.json",
+      "sha256": "efa137d9e82223988816ff1cef5549e043f671ce37f4e9ffe8d4af1a0bbc88f0",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/ui/ASSETS.md",
+      "sha256": "acf6282bae590238095b26acdf169e1180e6ffc81a5d7892e6d35bbbfc242ef8",
+      "status": "attributed-resource",
+      "sources": ["lipis/flag-icons revision 086f7e97d657358203916dbe84f61c2bccaa81eb MIT"],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "data/ui/flag-sources.json",
+      "sha256": "d0435118f1a00a4555cba3b55f8450e121a2106b953f93d8b575237d44225a9a",
+      "status": "attributed-resource",
+      "sources": ["lipis/flag-icons revision 086f7e97d657358203916dbe84f61c2bccaa81eb MIT"],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "reports/pole-audit/audit.json",
+      "sha256": "d02042f6dc6e7ea08c868975693ca1dcf89bd1377981422a8eeb2fcbccc02f9d",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "reports/pole-audit/legacy-baseline.json",
+      "sha256": "2d577c6a096551009f4500dd4ceaadb5917bd197348e830da67f44931ec08623",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "tests/fixtures/README.md",
+      "sha256": "1c975246b66e8e03508f4e1e865a909f72d21c4347286e681a558ca6fe96da79",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    },
+    {
+      "file": "tests/fixtures/pole-history.json",
+      "sha256": "11825cae05667f78a4ae8772fe27a15d748d1ea9b206473255c65d6c713bc3ee",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "tests/historical-data/fixtures/1951-france.json",
+      "sha256": "7685244cb48f2ba9d68a063174f20a65e2ec502d5c0306efc2bbeddfdca93ee3",
+      "status": "local-only",
+      "sources": [
+        "F1DB v2026.16.0 CC BY 4.0 / Jolpica CC BY-NC-SA 4.0 / linked archives; mixed scopes require review"
+      ],
+      "reason": "Mixed historical extraction/evidence; redistribution scope unresolved. Keep local, exclude from Git/publication/service bundle."
+    },
+    {
+      "file": "tests/historical-data/fixtures/README.md",
+      "sha256": "a4d6804d83d9324a71f019f23bb7e31753eee683cafdf006b75fb50cef09873f",
+      "status": "original-config",
+      "sources": [
+        "Original authored configuration or documentation; factual identifiers and linked source rights not relicensed"
+      ],
+      "reason": "Candidate only: original expression or independently licensed material, not a grant over third-party facts/trademarks. Final owner scope approval remains required."
+    }
+  ]
+}

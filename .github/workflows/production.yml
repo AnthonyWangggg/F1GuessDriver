@@ -1,0 +1,130 @@
+name: Approved production operation
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        type: choice
+        options: [verify, deploy, rollback]
+        required: true
+      scope:
+        type: choice
+        options: [web, server, data]
+        required: true
+      release_id:
+        type: string
+        required: true
+      dataset:
+        type: string
+        required: true
+      staged_data_manifest_sha256:
+        description: Data activation only; SHA of the independently audited, unchanged staged runtime manifest
+        type: string
+        required: false
+permissions:
+  contents: read
+concurrency:
+  group: production
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production-build
+    timeout-minutes: 30
+    outputs:
+      manifest_sha: ${{ steps.bind.outputs.manifest_sha }}
+    env:
+      OPERATION: ${{ inputs.action }}
+      RELEASE_ID: ${{ inputs.release_id }}
+      DEPLOY_DATASET_VERSION: ${{ inputs.dataset }}
+      TEST_DATABASE_URL: ''
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.21.0
+      - run: npm install --global pnpm@11.25.0 && pnpm install --frozen-lockfile
+      - name: Validate dispatch input
+        run: |
+          [[ "$RELEASE_ID" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]{0,95}$ ]]
+          [[ "$DEPLOY_DATASET_VERSION" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]{0,95}$ ]]
+      - name: Bind reviewed publication record
+        if: inputs.action == 'deploy'
+        env:
+          APPROVAL: ${{ secrets.PUBLICATION_APPROVAL_JSON }}
+        run: |
+          mkdir -p local-private/publication
+          printf '%s' "$APPROVAL" > local-private/publication/approval.json
+      - name: Build and seal through existing gates
+        if: inputs.action == 'deploy' && inputs.scope != 'data'
+        run: |
+          pnpm type-check && pnpm build && pnpm deploy:build
+          pnpm exec vitest run apps packages tests/game-rules --exclude tests/game-rules/poles-v2.spec.ts
+          pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org
+          pnpm deploy seal "${{ inputs.scope }}" "$RELEASE_ID"
+          release=$(cat release/latest.txt)
+          tar -czf release/runtime.tar.gz -C "$release" .
+          cp "release/$RELEASE_ID.manifest.json" release/runtime.manifest.json
+          sha256sum release/runtime.tar.gz release/runtime.manifest.json > release/SHA256SUMS
+      - name: Data activation retains the existing runtime
+        if: inputs.action == 'deploy' && inputs.scope == 'data'
+        run: pnpm security:scan && pnpm publication:check
+      - name: Bind exact artifact digest
+        id: bind
+        env:
+          SCOPE: ${{ inputs.scope }}
+          STAGED_DATA_SHA: ${{ inputs.staged_data_manifest_sha256 }}
+        run: |
+          if [[ "$OPERATION" != deploy ]]; then exit 0; fi
+          if [[ "$SCOPE" == data ]]; then
+            [[ "$STAGED_DATA_SHA" =~ ^[a-f0-9]{64}$ ]]
+            printf 'manifest_sha=%s\n' "$STAGED_DATA_SHA" >> "$GITHUB_OUTPUT"
+          else
+            digest=$(sha256sum release/runtime.manifest.json | cut -d ' ' -f 1)
+            printf 'manifest_sha=%s\n' "$digest" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: inputs.action == 'deploy' && inputs.scope != 'data'
+        with:
+          name: runtime-${{ github.sha }}-${{ inputs.release_id }}
+          path: |
+            release/runtime.tar.gz
+            release/runtime.manifest.json
+            release/SHA256SUMS
+          retention-days: 14
+          if-no-files-found: error
+  activate:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    environment: production
+    timeout-minutes: 10
+    env:
+      OPERATION: ${{ inputs.action }}
+      SCOPE: ${{ inputs.scope }}
+      RELEASE_ID: ${{ inputs.release_id }}
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+      EXPECTED_MANIFEST_SHA: ${{ needs.prepare.outputs.manifest_sha }}
+    steps:
+      - name: Activate only a root-sealed approved artifact already staged on host
+        # Artifact upload/sealing is deliberately a separate administrator boundary.
+        # This credential cannot upload files or run an arbitrary shell on production.
+        run: |
+          [[ "$RELEASE_ID" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]{0,95}$ ]]
+          [[ "$DEPLOY_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          trap 'rm -f ~/.ssh/deploy_key' EXIT
+          args=(-i ~/.ssh/deploy_key -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UpdateHostKeys=no -o ConnectTimeout=10)
+          if [[ "$OPERATION" == deploy ]]; then
+            [[ "$EXPECTED_MANIFEST_SHA" =~ ^[a-f0-9]{64}$ ]]
+            ssh "${args[@]}" "f1deploy@$DEPLOY_HOST" "deploy $SCOPE $RELEASE_ID $EXPECTED_MANIFEST_SHA"
+          else
+            ssh "${args[@]}" "f1deploy@$DEPLOY_HOST" "$OPERATION auto"
+          fi
+          ssh "${args[@]}" "f1deploy@$DEPLOY_HOST" 'verify auto'

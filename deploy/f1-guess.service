@@ -1,0 +1,28 @@
+[Unit]
+Description=F1 Driver Guess API
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=f1guess
+Group=f1guess
+WorkingDirectory=/opt/f1-guess/current
+EnvironmentFile=/etc/f1-guess/production.env
+ExecStart=/usr/bin/node /opt/f1-guess/current/apps/server/dist/index.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

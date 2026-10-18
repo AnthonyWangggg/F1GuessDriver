@@ -1,0 +1,36 @@
+Driver Guess Chinese display names — zh-2026-10-16-2
+
+Chinese display names are separate from driver identity and historical statistics.
+Names may vary by region. A Chinese label is not a claim of an official translation.
+Unverified or unavailable names fall back to the original English name.
+
+Community labels: Wikidata structured data, CC0.
+https://www.wikidata.org/wiki/Wikidata:Licensing
+Exact Q IDs and existing English identity URLs are recorded in the source catalog:
+packages/shared/src/localization-catalog.ts
+Some existing identity URLs were verified through explicit Wikipedia redirects.
+No biographical prose, Wikipedia article text or images are included.
+
+Selected primary names were checked against the 2024 Chinese Grand Prix media kit,
+page 24, published by the FIA:
+https://www.fia.com/sites/default/files/media_kit_-_chinese_gp.pdf#page=24
+Only name facts are used. No copyright licence over that media kit, logos, artwork,
+fonts or trademarks is claimed or granted.
+
+The primary spelling 埃尔顿·塞纳 is also attested in LEGO's Chinese Senna/McLaren booklet:
+https://www.lego.com/cdn/product-assets/product.bi.additional.main.pdf/10330_ZH_BI_Build_Translate.pdf
+Only the name fact is used; the alternative 冼拿 remains searchable.
+
+The three existing owner-reviewed names are retained. Search aliases can include
+regional spellings or project-selected abbreviations and are not necessarily official.
+The project's software licence does not relicense third-party rights or historical data.
+
+Closeout review withdrew 12 ambiguous/conflicting labels and revised 19 preferred names.
+507 of 784 eligible drivers have Chinese display names; 277 retain English fallback.
+Mainland spelling facts for 17 names were checked against the community driver list:
+https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表
+Only name facts and source links are retained, not article prose, tables or statistics.
+The published names 基米·安东内利 and 贝尔曼 were checked against Xinhua reports:
+https://www.xinhuanet.com/sports/20260317/93d6df0bf7d444bd9f7a77cb5b08c98b/c.html
+https://www.xinhuanet.com/politics/20260819/9b4c0a0994f84c709cfb497dcc9e7b87/c.html
+No news text, photography, or publication licence is reproduced or granted.

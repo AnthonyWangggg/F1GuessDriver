@@ -1,0 +1,23 @@
+[
+  {
+    "externalId": "michael_schumacher",
+    "displayName": "迈克尔·舒马赫",
+    "aliases": ["迈克尔·舒马赫", "舒马赫"],
+    "sourceUrl": "user:P1-request:2026-10-08",
+    "reviewNote": "用户在 P1 指令中明确给出的译名；舒马赫是有歧义的姓氏，不设全局唯一约束。"
+  },
+  {
+    "externalId": "hamilton",
+    "displayName": "刘易斯·汉密尔顿",
+    "aliases": ["刘易斯·汉密尔顿", "汉密尔顿"],
+    "sourceUrl": "user:P1-request:2026-10-08",
+    "reviewNote": "用户在 P1 指令中明确给出的译名。"
+  },
+  {
+    "externalId": "alonso",
+    "displayName": "费尔南多·阿隆索",
+    "aliases": ["费尔南多·阿隆索", "阿隆索"],
+    "sourceUrl": "user:P1-request:2026-10-08",
+    "reviewNote": "用户在 P1 指令中明确给出的译名。"
+  }
+]

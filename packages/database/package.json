@@ -1,0 +1,26 @@
+{
+  "name": "@f1/database",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist",
+    "migrations"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.0",
+    "pg": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.0.0"
+  }
+}

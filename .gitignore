@@ -1,0 +1,112 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+.DS_Store
+dist
+dist-ssr
+coverage
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
+
+.eslintcache
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest
+__screenshots__/
+
+# Vite
+*.timestamp-*-*.mjs
+
+test-results/
+playwright-report/
+
+.env
+.env.*
+!.env.example
+
+# Downloaded historical audit sources; retain provenance and focused evidence separately.
+reports/source-cache/
+
+# Local development evidence stays on disk; never publish session traces/backups.
+**/*development-report.md
+reports/*
+!reports/pole-audit/
+reports/pole-audit/*
+!reports/pole-audit/legacy-baseline.json
+**/*-snapshots/
+**/*.trace
+**/*.webm
+**/*.dump
+**/*.backup
+**/*.sql.gz
+*.sql
+!packages/database/migrations/*.sql
+*.sql.zip
+*.dump.zip
+*.sqlite
+*.db
+**/*.f1backup
+local-archive/
+local-private/
+release/
+release-tools/
+backups/
+.cache/
+.pnpm-store/
+build/
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.pem
+*.key
+!.env.example
+
+# Mixed historical evidence is retained locally pending redistribution review.
+data/reviews/race-results.json
+data/reviews/manual-results.json
+data/poles/race-reviews.json
+data/poles/identity-reviews.json
+data/poles/reference-checks.json
+data/mappings/f1db-drivers.json
+data/reference-checks.json
+tests/fixtures/pole-history.json
+tests/historical-data/fixtures/1951-france.json
+
+# Preserve local operations and stage evidence at their original bound paths.
+/deploy/p4*/
+/deploy/private-access/
+/deploy/public-prep/
+
+# Private credential containers and generated caches.
+.ssh/
+*.ppk
+*.p12
+*.pfx
+*.kdbx
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/

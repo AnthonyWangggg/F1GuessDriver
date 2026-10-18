@@ -1,0 +1,174 @@
+{
+  "records": [
+    {
+      "name": "@esbuild/win32-x64",
+      "version": "0.18.20",
+      "sourceUrl": "https://raw.githubusercontent.com/evanw/esbuild/22f0818cf81024b63752d815c51fe737612b43ec/LICENSE.md",
+      "file": "upstream/_esbuild_win32-x64-0.18.20.txt",
+      "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+    },
+    {
+      "name": "@esbuild/win32-x64",
+      "version": "0.25.12",
+      "sourceUrl": "https://raw.githubusercontent.com/evanw/esbuild/208f539945b145e7c9d6d844290f81c3fe5af320/LICENSE.md",
+      "file": "upstream/_esbuild_win32-x64-0.25.12.txt",
+      "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+    },
+    {
+      "name": "@esbuild/win32-x64",
+      "version": "0.28.2",
+      "sourceUrl": "https://raw.githubusercontent.com/evanw/esbuild/609683d892977362a0f99026cb74b96263d728a9/LICENSE.md",
+      "file": "upstream/_esbuild_win32-x64-0.28.2.txt",
+      "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+    },
+    {
+      "name": "saxes",
+      "version": "6.0.0",
+      "sourceUrl": "https://raw.githubusercontent.com/lddubeau/saxes/211fa0ebec9b628affc09219199639887174bfc3/LICENSE",
+      "file": "upstream/saxes-6.0.0.txt",
+      "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e"
+    },
+    {
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.12",
+      "sourceUrl": "https://github.com/rolldown/rolldown/blob/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE",
+      "downloadUrl": "https://api.github.com/repos/rolldown/rolldown/contents/LICENSE?ref=45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "file": "upstream/_rolldown_binding-win32-x64-msvc-1.2.12-LICENSE.txt",
+      "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+      "license": "MIT",
+      "commit": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "tag": "v1.2.12",
+      "role": "license"
+    },
+    {
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.12",
+      "sourceUrl": "https://github.com/rolldown/rolldown/blob/45e407b177f5885d04a9795f37f8be71d91f6f17/THIRD-PARTY-LICENSE",
+      "downloadUrl": "https://api.github.com/repos/rolldown/rolldown/contents/THIRD-PARTY-LICENSE?ref=45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "file": "upstream/_rolldown_binding-win32-x64-msvc-1.2.12-THIRD-PARTY-LICENSE.txt",
+      "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c",
+      "license": "MIT",
+      "commit": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "tag": "v1.2.12",
+      "role": "notice"
+    },
+    {
+      "name": "drizzle-orm",
+      "version": "0.45.3",
+      "sourceUrl": "https://github.com/drizzle-team/drizzle-orm/blob/15454dbe49d827c6081f3d0231e2e7985e517295/LICENSE",
+      "downloadUrl": "https://api.github.com/repos/drizzle-team/drizzle-orm/contents/LICENSE?ref=15454dbe49d827c6081f3d0231e2e7985e517295",
+      "file": "upstream/drizzle-orm-0.45.3-LICENSE.txt",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "license": "Apache-2.0",
+      "commit": "15454dbe49d827c6081f3d0231e2e7985e517295",
+      "tag": "0.45.3",
+      "role": "license"
+    },
+    {
+      "name": "@drizzle-team/brocli",
+      "version": "0.10.2",
+      "file": "upstream/_drizzle-team_brocli-0.10.2-LICENSE.txt",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "sourceUrl": "https://github.com/drizzle-team/brocli/blob/65d1432f4ce1f048d99604acd60d0eab8612c91b/LICENSE",
+      "downloadUrl": "https://api.github.com/repos/drizzle-team/brocli/contents/LICENSE?ref=65d1432f4ce1f048d99604acd60d0eab8612c91b",
+      "license": "Apache-2.0",
+      "commit": "65d1432f4ce1f048d99604acd60d0eab8612c91b",
+      "role": "license"
+    },
+    {
+      "name": "natural-compare",
+      "version": "1.4.0",
+      "file": "upstream/natural-compare-1.4.0-LICENSE.txt",
+      "sha256": "353fe762ba595bf1ffe786acf0f5984bb164205901d74f258af195fc8228c67d",
+      "sourceUrl": "https://lauri.rooden.ee/mit-license.txt",
+      "referenceUrl": "https://github.com/litejs/natural-compare-lite/blob/eec83eee67cfac84d6db30cdd65363f155673770/README.md",
+      "role": "license",
+      "license": "MIT",
+      "retrievedAt": "2026-10-09"
+    },
+    {
+      "name": "natural-compare",
+      "version": "1.4.0",
+      "file": "upstream/natural-compare-1.4.0-NOTICE.txt",
+      "sha256": "997e28c24d5fb520f257a9e517d82ebe0be1dc5f253fcc03c5630949e967e57e",
+      "sourceUrl": "https://github.com/litejs/natural-compare-lite/blob/eec83eee67cfac84d6db30cdd65363f155673770/README.md",
+      "referenceUrl": "https://github.com/litejs/natural-compare-lite/blob/eec83eee67cfac84d6db30cdd65363f155673770/README.md",
+      "role": "notice",
+      "license": "MIT",
+      "retrievedAt": "2026-10-09"
+    },
+    {
+      "name": "@vue/devtools-api",
+      "version": "6.6.4",
+      "file": "upstream/_vue_devtools-api-6.6.4-LICENSE.txt",
+      "sha256": "050bbca6960784db52ff387271bf2ecc5cbed7cf8581b415d528a6ecb6585015",
+      "sourceUrl": "https://github.com/vuejs/vue-devtools/blob/dd2ab5d4275187cbd81952a2a3d53c335643c1f4/LICENSE",
+      "downloadUrl": "https://api.github.com/repos/vuejs/vue-devtools/contents/LICENSE?ref=dd2ab5d4275187cbd81952a2a3d53c335643c1f4",
+      "commit": "dd2ab5d4275187cbd81952a2a3d53c335643c1f4",
+      "tag": "v6.6.4",
+      "license": "MIT",
+      "role": "license"
+    },
+    {
+      "name": "@humanfs/types",
+      "version": "0.15.0",
+      "file": "upstream/_humanfs_types-0.15.0-LICENSE.txt",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "sourceUrl": "https://github.com/humanwhocodes/humanfs/blob/85069f193cbacc371c3beb649ce746f8c5a493be/packages/core/LICENSE",
+      "downloadUrl": "https://api.github.com/repos/humanwhocodes/humanfs/contents/packages/core/LICENSE?ref=85069f193cbacc371c3beb649ce746f8c5a493be",
+      "license": "Apache-2.0",
+      "commit": "85069f193cbacc371c3beb649ce746f8c5a493be",
+      "role": "license",
+      "scopeEvidence": "https://github.com/humanwhocodes/humanfs/blob/85069f193cbacc371c3beb649ce746f8c5a493be/README.md"
+    },
+    {
+      "name": "@humanfs/types",
+      "version": "0.15.0",
+      "file": "upstream/_humanfs_types-0.15.0-attribution.txt",
+      "sha256": "855d6dc668425994e25381c010cce91d6b3bff76ba0eaed77a588239fcc6a718",
+      "sourceUrl": "https://github.com/humanwhocodes/humanfs/blob/85069f193cbacc371c3beb649ce746f8c5a493be/README.md",
+      "role": "notice",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "stackback",
+      "version": "0.0.2",
+      "file": "upstream/stackback-0.0.2-V8-BSD-NOTICE.txt",
+      "sha256": "b154c4cabeeb587f5cc63a41d0551ae69504460762d189a72ae141558ec5d184",
+      "sourceUrl": "https://github.com/defunctzombie/node-stackback/blob/2963095372abf7b75ba55f01cef08ab1e62c2ff4/formatstack.js",
+      "sourceFileSha256": "3c1191bd7094a36098418e7d1606e2a49e7ee25b5ddee54b0b2514ea1a43b8a7",
+      "role": "notice",
+      "license": "BSD-3-Clause (embedded V8 code only)"
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.12",
+      "sourceUrl": "https://github.com/rolldown/rolldown/blob/45e407b177f5885d04a9795f37f8be71d91f6f17/LICENSE",
+      "downloadUrl": "https://api.github.com/repos/rolldown/rolldown/contents/LICENSE?ref=45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "file": "upstream/_rolldown_binding-linux-x64-gnu-1.2.12-LICENSE.txt",
+      "sha256": "23ecfff35a5a2e80d92142f75228912c3b1abc4b5a8337a821ff4397e2f9f734",
+      "license": "MIT",
+      "commit": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "tag": "v1.2.12",
+      "role": "license"
+    },
+    {
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.12",
+      "sourceUrl": "https://github.com/rolldown/rolldown/blob/45e407b177f5885d04a9795f37f8be71d91f6f17/THIRD-PARTY-LICENSE",
+      "downloadUrl": "https://api.github.com/repos/rolldown/rolldown/contents/THIRD-PARTY-LICENSE?ref=45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "file": "upstream/_rolldown_binding-linux-x64-gnu-1.2.12-THIRD-PARTY-LICENSE.txt",
+      "sha256": "a877291d800ed43692f3f9ae09d8e01cc6f7293ad39d43896059c188ffbb8b7c",
+      "license": "MIT",
+      "commit": "45e407b177f5885d04a9795f37f8be71d91f6f17",
+      "tag": "v1.2.12",
+      "role": "notice"
+    }
+  ],
+  "unresolved": [
+    "abstract-logging@2.0.1",
+    "boolbase@1.0.0",
+    "drizzle-kit@0.31.11",
+    "stackback@0.0.2"
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "dataset_versions" ADD CONSTRAINT "dataset_status_check" CHECK ("dataset_versions"."validation_status" IN ('pending', 'valid', 'invalid'));

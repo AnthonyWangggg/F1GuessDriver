@@ -1,0 +1,9 @@
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  esbuild: true
+overrides:
+  boolbase: 2.0.0
+  rolldown: 1.2.12
+  abstract-logging: workspace:*

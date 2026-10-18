@@ -1,0 +1,293 @@
+{
+  "revision": "zh-2026-10-16-2",
+  "scope": "Display/search only; neither historical identity corrections nor owner signature",
+  "ownerApproval": null,
+  "decisions": [
+    {
+      "driverId": "jolpica:driver:ader",
+      "previousName": "沃尔特·阿德",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source birthday conflicts with local identity record; do not resolve by modifying historical data",
+      "source": "https://www.wikidata.org/wiki/Q165393"
+    },
+    {
+      "driverId": "jolpica:driver:alliot",
+      "previousName": "菲利普·阿利奥",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source birthday conflicts with local identity record; do not resolve by modifying historical data",
+      "source": "https://www.wikidata.org/wiki/Q173305"
+    },
+    {
+      "driverId": "jolpica:driver:bailey",
+      "previousName": "朱利安·贝利",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source entity is not a human; ambiguous identity URL must not supply driver aliases",
+      "source": "https://www.wikidata.org/wiki/Q62123453"
+    },
+    {
+      "driverId": "jolpica:driver:biondetti",
+      "previousName": "克莱门特·比翁代蒂",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source birthday conflicts with local identity record; do not resolve by modifying historical data",
+      "source": "https://www.wikidata.org/wiki/Q172489"
+    },
+    {
+      "driverId": "jolpica:driver:brooks",
+      "previousName": "托尼·布鲁克斯",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source entity is not a human; ambiguous identity URL must not supply driver aliases",
+      "source": "https://www.wikidata.org/wiki/Q1845218"
+    },
+    {
+      "driverId": "jolpica:driver:claes",
+      "previousName": "比利时车队",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Driver label incorrectly names a constructor",
+      "source": "https://www.wikidata.org/wiki/Q171889"
+    },
+    {
+      "driverId": "jolpica:driver:eaton",
+      "previousName": "乔治·伊顿",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source entity is not a human; ambiguous identity URL must not supply driver aliases",
+      "source": "https://www.wikidata.org/wiki/Q28151129"
+    },
+    {
+      "driverId": "jolpica:driver:faulkner",
+      "previousName": "沃特·福克纳",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source birthday conflicts with local identity record; do not resolve by modifying historical data",
+      "source": "https://www.wikidata.org/wiki/Q173418"
+    },
+    {
+      "driverId": "jolpica:driver:gardner",
+      "previousName": "法兰克·加德纳",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source birthday conflicts with local identity record; do not resolve by modifying historical data",
+      "source": "https://www.wikidata.org/wiki/Q172539"
+    },
+    {
+      "driverId": "jolpica:driver:marimon",
+      "previousName": "奥诺弗雷·马里蒙",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source birthday conflicts with local identity record; do not resolve by modifying historical data",
+      "source": "https://www.wikidata.org/wiki/Q171624"
+    },
+    {
+      "driverId": "jolpica:driver:penske",
+      "previousName": "彭斯克车队",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Driver label incorrectly names a constructor",
+      "source": "https://www.wikidata.org/wiki/Q172155"
+    },
+    {
+      "driverId": "jolpica:driver:trevor_taylor",
+      "previousName": "特雷弗?泰勒",
+      "action": "english-fallback",
+      "reviewStatus": "pending-independent-identity-review",
+      "reason": "Source entity is not a human; ambiguous identity URL must not supply driver aliases",
+      "source": "https://www.wikidata.org/wiki/Q47001334"
+    },
+    {
+      "driverId": "jolpica:driver:alboreto",
+      "previousName": "米歇尔·阿尔博瑞托",
+      "action": "preferred-spelling",
+      "name": "米凯莱·阿尔伯雷托",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:berger",
+      "previousName": "加赫特·贝加",
+      "action": "preferred-spelling",
+      "name": "格哈德·博格",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:damon_hill",
+      "previousName": "戴蒙·希尔",
+      "action": "preferred-spelling",
+      "name": "达蒙·希尔",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:hill",
+      "previousName": "诺曼·格拉汉姆·希尔",
+      "action": "preferred-spelling",
+      "name": "格拉汉姆·希尔",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:phil_hill",
+      "previousName": "菲利普·托尔·希尔",
+      "action": "preferred-spelling",
+      "name": "菲尔·希尔",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:fangio",
+      "previousName": "胡安·曼努埃尔·范吉奥",
+      "action": "preferred-spelling",
+      "name": "胡安·曼努埃尔·方吉奥",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:hawthorn",
+      "previousName": "约翰·麦克·霍索恩",
+      "action": "preferred-spelling",
+      "name": "迈克·霍索恩",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:hulme",
+      "previousName": "丹尼·哈默",
+      "action": "preferred-spelling",
+      "name": "丹尼·休姆",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:hunt",
+      "previousName": "占姆士·亨特",
+      "action": "preferred-spelling",
+      "name": "詹姆斯·亨特",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:mclaren",
+      "previousName": "布鲁斯·麦克拉伦",
+      "action": "preferred-spelling",
+      "name": "布鲁斯·迈凯伦",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:piquet",
+      "previousName": "尼尔森·皮奎",
+      "action": "preferred-spelling",
+      "name": "尼尔森·皮奎特",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:ralf_schumacher",
+      "previousName": "拉夫·舒马赫",
+      "action": "preferred-spelling",
+      "name": "拉尔夫·舒马赫",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:scheckter",
+      "previousName": "朱迪·大卫·谢科特",
+      "action": "preferred-spelling",
+      "name": "乔迪·谢克特",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:vettel",
+      "previousName": "赛巴斯蒂安·维泰尔",
+      "action": "preferred-spelling",
+      "name": "塞巴斯蒂安·维特尔",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:villeneuve",
+      "previousName": "雅克·维尔纳夫",
+      "action": "preferred-spelling",
+      "name": "雅克·维伦纽夫",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:colapinto",
+      "previousName": "佛朗哥·科拉平托",
+      "action": "preferred-spelling",
+      "name": "弗兰科·科拉平托",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:doohan",
+      "previousName": "杰克·督汉",
+      "action": "preferred-spelling",
+      "name": "杰克·杜汉",
+      "status": "community",
+      "reviewStatus": "community-mainland-spelling-candidate",
+      "reason": "Name fact checked against the mainland-name column; former identity-safe regional spelling remains a search alias. Not an official-name claim.",
+      "source": "https://zh.wikipedia.org/zh-cn/一级方程式赛车车手列表"
+    },
+    {
+      "driverId": "jolpica:driver:antonelli",
+      "previousName": "安德列·基米·安东尼利",
+      "action": "preferred-spelling",
+      "name": "基米·安东内利",
+      "status": "source-attested",
+      "reviewStatus": "published-name-fact-checked",
+      "reason": "Published Chinese name fact only; Bearman uses the attested surname without inventing a full given name. English full name remains visible.",
+      "source": "https://www.xinhuanet.com/sports/20260317/93d6df0bf7d444bd9f7a77cb5b08c98b/c.html"
+    },
+    {
+      "driverId": "jolpica:driver:bearman",
+      "previousName": "奥利华·贝尔曼",
+      "action": "preferred-spelling",
+      "name": "贝尔曼",
+      "status": "source-attested",
+      "reviewStatus": "published-name-fact-checked",
+      "reason": "Published Chinese name fact only; Bearman uses the attested surname without inventing a full given name. English full name remains visible.",
+      "source": "https://www.xinhuanet.com/politics/20260819/9b4c0a0994f84c709cfb497dcc9e7b87/c.html"
+    }
+  ]
+}

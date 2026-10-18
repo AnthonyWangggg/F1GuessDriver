@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+# Imported legal text and flag resources retain the exact audited bytes/SHA256.
+docs/licenses/*.txt -text
+docs/licenses/upstream/*.txt -text
+docs/licenses/Jolpica-TERMS-2025-08-27.md -text
+apps/web/public/flags/*.svg -text
+apps/web/public/flags/LICENSE.txt -text

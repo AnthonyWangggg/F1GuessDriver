@@ -1,0 +1,5 @@
+{
+  "root": "/opt/f1guessdriver/rolling",
+  "origin": "https://f1driverguess.online",
+  "minAvailableMiB": 768
+}

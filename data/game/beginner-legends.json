@@ -1,0 +1,72 @@
+{
+  "reviewedAt": "2026-10-09",
+  "selectionPolicy": "首批11名人工审核候选，不按数值自动扩展；稳定ID与v2资格已核对。",
+  "drivers": [
+    {
+      "driverId": "jolpica:driver:senna",
+      "name": "Ayrton Senna",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:michael_schumacher",
+      "name": "Michael Schumacher",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:prost",
+      "name": "Alain Prost",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:lauda",
+      "name": "Niki Lauda",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:fangio",
+      "name": "Juan Manuel Fangio",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:clark",
+      "name": "Jim Clark",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:stewart",
+      "name": "Jackie Stewart",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:mansell",
+      "name": "Nigel Mansell",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:piquet",
+      "name": "Nelson Piquet",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:hakkinen",
+      "name": "Mika Häkkinen",
+      "sourceUrl": "https://www.formula1.com/en/drivers/hall-of-fame",
+      "reason": "F1官方Hall of Fame收录的世界冠军；作为初批历史代表性名单人工选择。"
+    },
+    {
+      "driverId": "jolpica:driver:gilles_villeneuve",
+      "name": "Gilles Villeneuve",
+      "sourceUrl": "https://www.formula1.com/en/latest/article/5-reasons-f1-fans-are-still-in-awe-of-the-legendary-gilles-villeneuve.6Dvc1Wh0NMPqZNqBIwIZHU",
+      "reason": "F1官方专文确认历史代表性；不是以世界冠军为必要条件。"
+    }
+  ]
+}
