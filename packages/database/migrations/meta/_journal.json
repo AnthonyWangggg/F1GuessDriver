@@ -64,6 +64,48 @@
       "when": 1792228977006,
       "tag": "0008_random_matches",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792328751955,
+      "tag": "0009_identity_v1",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792332581046,
+      "tag": "0010_points_v1",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792335218377,
+      "tag": "0011_modes_v2",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792397931259,
+      "tag": "0012_bo3_v1",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792426941000,
+      "tag": "0013_bo3_points_eligibility",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792944092827,
+      "tag": "0014_account_no_email",
+      "breakpoints": true
     }
   ]
 }

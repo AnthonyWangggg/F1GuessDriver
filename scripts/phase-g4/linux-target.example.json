@@ -1,0 +1,20 @@
+{
+  "environment": "isolated-g4",
+  "confirmedByOwner": false,
+  "authorizationReference": null,
+  "host": "127.0.0.1",
+  "root": "/var/tmp/f1-g4",
+  "candidateSha256": null,
+  "database": {
+    "host": "127.0.0.1",
+    "port": 55439,
+    "name": "f1_bo3_test_phase_g4_linux",
+    "runtimeRole": "f1_bo3_test_app",
+    "credentials": "external",
+    "requiredMarker": "bo3_test_safety_marker"
+  },
+  "ports": { "blue": 55447, "green": 55448, "proxy": 55449 },
+  "units": { "blue": "f1-g4@blue.service", "green": "f1-g4@green.service" },
+  "mail": "mock-only",
+  "productionOperations": false
+}

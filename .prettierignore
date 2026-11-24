@@ -16,4 +16,5 @@ local-archive/
 release/
 release-tools/
 docs/licenses/Jolpica-TERMS-2025-08-27.md
+/docs/v3/private/
 **/*-snapshots/

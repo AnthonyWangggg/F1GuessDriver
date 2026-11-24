@@ -1,0 +1,7 @@
+# Both default false. Never enables production here.
+BO3_ENABLED=false
+BO3_RECOVERY_ENABLED=false
+# To pause new queue joins while preserving existing series and background convergence:
+# BO3_ENABLED=false; BO3_RECOVERY_ENABLED=true; POINTS_ENABLED=true
+# Requires reviewed identity encryption key, additive 0012 migration, role template,
+# certified v3 snapshot with seven distinct eligible answers and audited points activation.

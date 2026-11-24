@@ -8,6 +8,13 @@ describe('local operational evidence stays out of source and runtime candidates'
     'deploy/p4l/f1guessdriver-cert-renew.service',
     'deploy/private-access/connect.ps1',
     'deploy/public-prep/OWNER-APPROVAL.md',
+    'docs/v3/private/history/PROD-report.md',
+    'PROD-03C-PUBLIC-VERIFIED-RESULT.md',
+    'STG-06-DEPLOY-RESULT.md',
+    'PRODUCTION-INVENTORY-20261116.md',
+    'diagnostics/session.har',
+    'keys/id_ed25519',
+    'keys/recovery.p12',
   ])('rejects %s regardless of whether a secret string is present', (path) => {
     expect(prohibited(path)).toBe(true)
     expect(prohibitedCandidate(path)).toBe(true)

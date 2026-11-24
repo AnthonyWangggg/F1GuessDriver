@@ -24,6 +24,7 @@ import { GameService, publicDriver } from './games.js'
 import { ApiError } from './errors.js'
 import { answerPool } from '../game/difficulty.js'
 import { compareDrivers } from '../game/rules.js'
+import type { OwnerGuard } from '../identity/access.js'
 
 type Tx = Parameters<Parameters<Database['transaction']>[0]>[0]
 export type DailyClock = (reader: Pick<Database, 'execute'>) => Promise<Date>
@@ -39,8 +40,12 @@ export class DailyService {
     private readonly defaultVersion?: string,
     private readonly chooseIndex: (length: number) => number = randomInt,
     private readonly clock: DailyClock = databaseClock,
+    private readonly guard?: OwnerGuard,
   ) {
     this.data = new GameService(db, defaultVersion)
+  }
+  withGuard(guard?: OwnerGuard) {
+    return new DailyService(this.db, this.defaultVersion, this.chooseIndex, this.clock, guard)
   }
   // Committed separately so failed/replayed requests cannot bypass the shared owner window.
   async consume(ownerHash: string) {
@@ -153,6 +158,7 @@ export class DailyService {
   }
   async enter(ownerHash: string) {
     return this.db.transaction(async (tx) => {
+      await this.guard?.(tx, ownerHash)
       const date = beijingDate(await this.clock(tx)),
         challenge = await this.challenge(tx, date)
       await tx
@@ -177,18 +183,21 @@ export class DailyService {
   async get(ownerHash: string, id: string) {
     return this.db.transaction(
       async (tx) => {
+        await this.guard?.(tx, ownerHash)
         const [entry] = await tx
           .select()
           .from(dailyEntries)
           .where(and(eq(dailyEntries.id, id), eq(dailyEntries.ownerHash, ownerHash)))
+          .for('share')
         if (!entry) throw new ApiError(404, 'DAILY_ENTRY_NOT_FOUND', 'Daily entry not found')
         return this.response(tx, entry)
       },
-      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+      { isolationLevel: this.guard ? 'read committed' : 'repeatable read' },
     )
   }
   async guess(ownerHash: string, id: string, driverId: string, key: string) {
     return this.db.transaction(async (tx) => {
+      await this.guard?.(tx, ownerHash)
       const [entry] = await tx
         .select()
         .from(dailyEntries)
@@ -256,6 +265,7 @@ export class DailyService {
   async statistics(ownerHash?: string) {
     return this.db.transaction(
       async (tx) => {
+        if (ownerHash) await this.guard?.(tx, ownerHash)
         const date = beijingDate(await this.clock(tx))
         const rows = await tx
           .select({
@@ -287,7 +297,7 @@ export class DailyService {
           ),
         })
       },
-      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+      { isolationLevel: this.guard ? 'read committed' : 'repeatable read' },
     )
   }
 }

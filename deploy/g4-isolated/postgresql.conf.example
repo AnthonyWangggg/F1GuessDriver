@@ -1,0 +1,18 @@
+# Standalone TEST cluster. initdb/roles are a later R action, not performed by this file.
+data_directory = '/var/tmp/f1-g4/pgdata'
+hba_file = '/var/tmp/f1-g4/config/pg/pg_hba.conf'
+ident_file = '/var/tmp/f1-g4/pgdata/pg_ident.conf'
+listen_addresses = '127.0.0.1'
+port = 55439
+unix_socket_directories = '/var/tmp/f1-g4/runtime/pg'
+unix_socket_permissions = 0700
+shared_buffers = '32MB'
+work_mem = '2MB'
+maintenance_work_mem = '16MB'
+max_connections = 20
+password_encryption = 'scram-sha-256'
+logging_collector = off
+log_statement = 'none'
+log_min_error_statement = panic
+log_connections = off
+log_disconnections = off

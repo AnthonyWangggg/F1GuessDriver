@@ -1,0 +1,18 @@
+{
+  "format": "first-prod-rebind-v1",
+  "oldPlanSha256": "REPLACE_WITH_ACTUAL_CANONICAL_PLAN_SHA256",
+  "oldAuthorizationSha256": "REPLACE_WITH_ACTUAL_AUTHORIZATION_SHA256",
+  "oldStateSha256": "REPLACE_WITH_ACTUAL_LIFECYCLE_SHA256",
+  "newPlanFile": "/etc/f1-dual/prod-review/next-plan.json",
+  "newPlanSha256": "REPLACE_WITH_REVIEWED_NEW_PLAN_SHA256",
+  "newAuthorizationFile": "/etc/f1-dual/prod-review/next-authorization.json",
+  "newAuthorizationSha256": "REPLACE_WITH_REVIEWED_NEW_AUTHORIZATION_SHA256",
+  "controllerBundleSha256": "REPLACE_WITH_APPROVED_INSTALLED_BUNDLE_SHA256",
+  "identitySha256": "REPLACE_WITH_REBIND_IDENTITY_OUTPUT",
+  "approvedGrants": {},
+  "operations": ["rebind-plan", "recover-rebind", "abort-rebind"],
+  "approvalReference": "",
+  "candidateSha256": "REPLACE_WITH_EXACT_APPROVED_PUBLIC_CANDIDATE_SHA256",
+  "candidateFiles": 0,
+  "publicScopeApproval": ""
+}

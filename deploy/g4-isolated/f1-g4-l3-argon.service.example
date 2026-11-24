@@ -1,0 +1,34 @@
+# Dedicated T2-only oneshot; never enabled at boot or started by app services.
+[Unit]
+Description=Driver Guess isolated Argon budget rehearsal
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+User=f1l3test
+Group=f1l3test
+Slice=f1-g4-l3.slice
+WorkingDirectory=/var/tmp/f1-g4/candidate
+Environment=NODE_ENV=test AUTH_HASH_CONCURRENCY=1
+ExecStart=/usr/bin/node --import tsx scripts/phase-g4/crypto-benchmark.ts
+TimeoutStartSec=120
+MemoryHigh=384M
+MemoryMax=512M
+MemorySwapMax=0
+TasksMax=64
+UMask=0077
+PrivateTmp=true
+BindReadOnlyPaths=/var/tmp/f1-g4/candidate
+BindPaths=/var/tmp/f1-g4/evidence
+ReadWritePaths=/var/tmp/f1-g4/evidence
+InaccessiblePaths=-/etc/f1guessdriver -/etc/f1-guess -/opt/f1guessdriver -/var/backups/f1guessdriver -/etc/letsencrypt -/etc/postgresql -/var/lib/postgresql -/run/postgresql -/etc/ssl/private
+ProtectSystem=strict
+ProtectHome=true
+NoNewPrivileges=true
+RestrictSUIDSGID=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_UNIX
+IPAddressDeny=any
+StandardOutput=journal
+StandardError=journal

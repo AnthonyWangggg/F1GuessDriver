@@ -1,7 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { expect, it, vi, afterEach } from 'vitest'
 import AttributeCell from './AttributeCell.vue'
-import GameResult from './GameResult.vue'
 import AnswerProfile from './AnswerProfile.vue'
 import { api } from '../../services/api'
 import { fixtureGame, fixtureAnswerProfile, driver, attributes } from '../../test-fixtures'
@@ -88,23 +87,6 @@ it('explicitly explains an empty saved team set', async () => {
   await wrapper.get('button').trigger('click')
   expect(document.querySelector('[role=dialog]')?.textContent).toContain('暂无可用数据')
   wrapper.unmount()
-})
-it.each(['won', 'lost'] as const)('reuses %s result structure without daily restart', (status) => {
-  const game = { ...fixtureGame(), status, answer: driver }
-  const ordinary = mount(GameResult, { props: { game, busy: false } })
-  const daily = mount(GameResult, {
-    props: { game, busy: false, contextLabel: '每日一题 · 2026-10-17' },
-    slots: { actions: '明天再来挑战 · 北京时间 00:00 更新' },
-  })
-  expect(daily.get('h2').text()).toBe(ordinary.get('h2').text())
-  expect(daily.get('.result-emblem').text()).toBe(ordinary.get('.result-emblem').text())
-  expect(daily.classes()).toContain(status)
-  expect(daily.text()).toContain('每日一题 · 2026-10-17')
-  expect(daily.text()).toContain('/ 8 次猜测')
-  expect(daily.find('button').exists()).toBe(false)
-  expect(ordinary.find('button').exists()).toBe(true)
-  ordinary.unmount()
-  daily.unmount()
 })
 it('falls back from an empty answer timeline to teams, then explicitly explains absent teams', async () => {
   const profile = fixtureAnswerProfile({

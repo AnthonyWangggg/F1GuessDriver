@@ -327,6 +327,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
     it('enforces contracts, origin, ownership and separation from ordinary game/reset APIs', async () => {
       const db = connection(),
         app = buildApp({
+          legacyIdentityFixture: true,
           database: db.db,
           datasetVersion: version,
           dailyEnabled: true,
@@ -339,7 +340,11 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
           'x-f1-game-contract': 'v3',
           'sec-fetch-site': 'same-origin',
         }
-      const disabled = buildApp({ database: db.db, datasetVersion: version })
+      const disabled = buildApp({
+        legacyIdentityFixture: true,
+        database: db.db,
+        datasetVersion: version,
+      })
       try {
         expect((await disabled.inject('/api/daily')).statusCode).toBe(503)
         const meta = await app.inject('/api/daily')

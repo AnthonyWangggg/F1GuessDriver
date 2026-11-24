@@ -363,6 +363,7 @@ describe('bounded Nginx generation convergence', () => {
       health?: string
       redirect?: boolean
       diskAsset?: string
+      unsafeProtocol?: boolean
     } = {},
   ) {
     const { root, config } = await fixture()
@@ -399,7 +400,17 @@ describe('bounded Nginx generation convergence', () => {
           headers: { 'cache-control': 'public, max-age=31536000, immutable' },
         })
       return new Response(JSON.stringify({ status: options.health ?? 'ok' }), {
-        headers: { 'x-f1-release': options.apiGeneration ?? 'g-new' },
+        headers: {
+          'x-f1-release': options.apiGeneration ?? 'g-new',
+          ...(options.unsafeProtocol
+            ? {}
+            : {
+                'x-f1-account': 'username-recovery-v2',
+                'x-f1-authorization': 'principal-owner-v1',
+                'x-f1-ciphertext': 'identity-envelope-v2',
+                'x-f1-bo3-points': 'bo3-points-eligibility-v2',
+              }),
+        },
       })
     })
     return publicGenerationSample(config, next, old, AbortSignal.timeout(1000))
@@ -412,6 +423,7 @@ describe('bounded Nginx generation convergence', () => {
     await expect(sampleFixture()).resolves.toMatchObject({ target: true })
   })
   it.each([
+    [{ unsafeProtocol: true }, 'Unsafe application generation'],
     [{ htmlGeneration: 'unapproved' }, 'Unknown'],
     [{ apiGeneration: 'unapproved' }, 'Unknown'],
     [{ content: 'wrong new version' }, 'release mismatch'],

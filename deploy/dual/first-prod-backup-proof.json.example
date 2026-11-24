@@ -1,0 +1,22 @@
+{
+  "format": "prod01-backup-proof-v1",
+  "status": "NOT_RUN",
+  "sourceDatabase": "f1guess_prod",
+  "verifiedAt": "REPLACE_AFTER_ACTUAL_RESTORE",
+  "databaseRestoredSeparately": false,
+  "configBackupVerified": false,
+  "rolesAndIdentityKeysVerified": false,
+  "snapshotFingerprintsMatch": false,
+  "isolatedSocketOnly": false,
+  "database": {
+    "path": "/srv/f1-dual/backups/legacy-prod01/REPLACE-UNIQUE-ID/database.dump",
+    "sha256": "REPLACE_AFTER_BACKUP"
+  },
+  "configuration": {
+    "path": "/srv/f1-dual/backups/legacy-prod01/REPLACE-UNIQUE-ID/configuration.tar",
+    "sha256": "REPLACE_AFTER_BACKUP"
+  },
+  "restoreTarget": "REPLACE_WITH_APPROVED_PRIVATE_CLUSTER_DIRECTORY",
+  "manifestSha256": "REPLACE_WITH_REVIEWED_EXACT_CONFIGURATION_MANIFEST_SHA",
+  "evidenceDirectory": "REPLACE_WITH_PRIVATE_TEST_EVIDENCE_DIRECTORY"
+}

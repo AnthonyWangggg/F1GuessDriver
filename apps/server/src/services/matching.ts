@@ -20,6 +20,7 @@ import {
   type MatchRound,
 } from '../game/match-policy.js'
 import { ApiError } from './errors.js'
+import type { OwnerGuard } from '../identity/access.js'
 
 type Tx = Parameters<Parameters<Database['transaction']>[0]>[0]
 export type MatchClock = (tx: Pick<Database, 'execute'>) => Promise<Date>
@@ -75,8 +76,12 @@ export class MatchingService {
     private readonly version?: string,
     private readonly chooseIndex: (length: number) => number = randomInt,
     private readonly clock: MatchClock = databaseClock,
+    private readonly guard?: OwnerGuard,
   ) {
     this.data = new GameService(db, version)
+  }
+  withGuard(guard?: OwnerGuard) {
+    return new MatchingService(this.db, this.version, this.chooseIndex, this.clock, guard)
   }
   async health() {
     await this.db.execute(
@@ -119,6 +124,7 @@ export class MatchingService {
     operation: (tx: Tx) => Promise<MatchmakingState>,
   ) {
     return this.transaction(async (tx) => {
+      await this.guard?.(tx, owner)
       await tx.execute(
         sql`SELECT pg_advisory_xact_lock(hashtextextended(${'f1-match-owner:' + owner},0))`,
       )
@@ -352,6 +358,7 @@ export class MatchingService {
   }
   async state(owner: string) {
     return this.transaction(async (tx) => {
+      await this.guard?.(tx, owner)
       await this.queueLock(tx)
       return this.inspect(tx, owner)
     })
@@ -396,6 +403,7 @@ export class MatchingService {
   }
   async get(owner: string, id: string) {
     return this.transaction(async (tx) => {
+      await this.guard?.(tx, owner)
       const loaded = await this.load(tx, id, owner),
         now = await this.clock(tx)
       await this.settle(tx, loaded, now)

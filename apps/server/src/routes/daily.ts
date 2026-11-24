@@ -1,5 +1,6 @@
+import { ownerGuard } from '../identity/access.js'
 import { z } from 'zod'
-import type { FastifyInstance } from 'fastify'
+import type { FastifyInstance, FastifyRequest } from 'fastify'
 import { DAILY_CONTRACT, dailyGuessSchema, gameIdParamsSchema } from '@f1/shared'
 import {
   checkOrigin,
@@ -20,19 +21,19 @@ export function registerDailyRoutes(
 ) {
   const limiter = new RateLimiter(),
     empty = z.object({}).strict()
-  const data = () => {
+  const data = (request: FastifyRequest) => {
     if (!service) throw new ApiError(503, 'DAILY_DISABLED', 'Daily challenge is not enabled')
-    return service
+    return service.withGuard(ownerGuard(request))
   }
   app.get('/api/daily', async (request, reply) => {
     limiter.consume('search', request.ip, reply)
     parseRequest(empty, request.query)
-    return data().metadata()
+    return data(request).metadata()
   })
   app.get('/api/daily/statistics', async (request, reply) => {
     limiter.consume('search', request.ip, reply)
     parseRequest(empty, request.query)
-    return data().statistics(ownerIdentity(request)?.hash)
+    return data(request).statistics(ownerIdentity(request)?.hash)
   })
   app.post('/api/daily/entry', async (request, reply) => {
     checkOrigin(request, origins)
@@ -40,7 +41,7 @@ export function registerDailyRoutes(
     parseRequest(empty, request.body ?? {})
     if (request.headers['x-f1-daily-contract'] !== DAILY_CONTRACT)
       throw new ApiError(426, 'DAILY_CLIENT_UPGRADE_REQUIRED', 'Reload the daily client')
-    const daily = data(),
+    const daily = data(request),
       owner = ownerIdentity(request)?.hash ?? createIdentity(reply, secureCookie)
     await daily.consume(owner)
     return daily.enter(owner)
@@ -49,7 +50,7 @@ export function registerDailyRoutes(
     limiter.consume('search', request.ip, reply)
     parseRequest(empty, request.query)
     const { id } = parseRequest(gameIdParamsSchema, request.params)
-    return data().get(requireIdentity(request), id)
+    return data(request).get(requireIdentity(request), id)
   })
   app.post('/api/daily/entries/:id/guess', async (request, reply) => {
     checkOrigin(request, origins)
@@ -59,7 +60,7 @@ export function registerDailyRoutes(
     const { id } = parseRequest(gameIdParamsSchema, request.params),
       body = parseRequest(dailyGuessSchema, request.body),
       owner = requireIdentity(request),
-      daily = data()
+      daily = data(request)
     await daily.consume(owner)
     return daily.guess(owner, id, body.driverId, body.idempotencyKey)
   })

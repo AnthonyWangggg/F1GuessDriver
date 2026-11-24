@@ -110,3 +110,13 @@ __pycache__/
 *.pyo
 .pytest_cache/
 .ruff_cache/
+
+# Operations reports and credentials are local-only, even before filing.
+/docs/v3/private/
+/PROD-*.md
+/PRODUCTION-INVENTORY*.md
+/STG-*.md
+id_rsa
+id_ed25519
+*.har
+*.p7b

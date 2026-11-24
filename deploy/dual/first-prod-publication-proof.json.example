@@ -1,0 +1,14 @@
+{
+  "format": "prod01-publication-proof-v1",
+  "version": "7e46530e99a6475f77aa5d9028e8620fc9d5656b-e7d2cb53eb47b073a97ce5c2e7d5f7c375c77509ced96d6611e0277ba764dea7",
+  "artifactSha256": "e7d2cb53eb47b073a97ce5c2e7d5f7c375c77509ced96d6611e0277ba764dea7",
+  "lockSha256": "70ec722148538b101278fd9a9c0217d93bc8fb3f67b50f3fc2e077d6cc5e4167",
+  "result": "NOT_RUN",
+  "fullGatePassed": false,
+  "gitCommit": "7e46530e99a6475f77aa5d9028e8620fc9d5656b",
+  "candidateFiles": 0,
+  "candidateSha256": "REPLACE_AFTER_EXACT_CANDIDATE_APPROVAL",
+  "controllerBundleSha256": "REPLACE_AFTER_EXACT_CONTROLLER_APPROVAL",
+  "publicScopeApproval": "",
+  "evidenceDirectory": "REPLACE_AFTER_GATE_AND_SCOPE_REVIEW"
+}

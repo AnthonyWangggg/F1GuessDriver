@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
+import { fullFixtures } from '../../scripts/lib/full-fixtures.js'
 import {
   changedFiles,
+  gitEquivalentComparison,
   classify,
   digest,
   plan,
@@ -11,6 +13,39 @@ import {
 } from '../../scripts/lib/verification.js'
 
 describe('scope verification', () => {
+  it('separates certified history targets and fails when unit fixture configuration is absent', () => {
+    const certified = 'postgresql://fixture@127.0.0.1/f1_restore_test_history'
+    const input = { TEST_DATABASE_URL: 'unrelated', V3_CERTIFIED_TEST_DATABASE_URL: certified }
+    expect(fullFixtures('database', input).TEST_DATABASE_URL).toBe(certified)
+    expect(fullFixtures('history', input).DATABASE_URL).toBe(certified)
+    expect(fullFixtures('format', input).TEST_DATABASE_URL).toBeUndefined()
+    expect(() => fullFixtures('unit', input)).toThrow('V3_FINAL_ROLE_TEST_URL')
+    expect(() =>
+      fullFixtures('history', { V3_CERTIFIED_TEST_DATABASE_URL: 'postgresql://remote/db' }),
+    ).toThrow('loopback')
+    expect(plan('full', []).steps.find(({ id }) => id === 'visual')?.args).toEqual([
+      'test:e2e:v3:visual',
+    ])
+  })
+  it('uses Git equivalence for tracked line endings without hiding edits, additions, deletions or private inputs', () => {
+    const before = { eol: 'lf', changed: 'old', deleted: 'old', private: 'old', renameFrom: 'old' }
+    const after = { eol: 'crlf', changed: 'new', added: 'new', private: 'new', renameTo: 'new' }
+    const current = gitEquivalentComparison(
+      before,
+      after,
+      ['eol', 'changed', 'deleted', 'renameTo'],
+      new Set(['changed', 'deleted', 'renameFrom', 'renameTo']),
+    )
+    expect(changedFiles(before, current)).toEqual([
+      'added',
+      'changed',
+      'deleted',
+      'private',
+      'renameFrom',
+      'renameTo',
+    ])
+    expect(after.eol).toBe('crlf') // raw cache inputs are never rewritten
+  })
   it('launches Windows pnpm executables directly and JS CLIs through Node', () => {
     expect(pnpmInvocation('C:/pnpm.exe', 'node', ['exec', 'eslint', 'space name.ts'])).toEqual({
       command: 'C:/pnpm.exe',
@@ -32,6 +67,15 @@ describe('scope verification', () => {
     expect(
       changedFiles({ old: 'a', deleted: 'b', same: 'c' }, { renamed: 'a', new: 'd', same: 'c' }),
     ).toEqual(['deleted', 'new', 'old', 'renamed'])
+  })
+  it('preserves mode changes and staged deletion even if an identical untracked file recreates the working path', () => {
+    expect(
+      changedFiles(
+        { recreated: 'same', mode: 'same' },
+        { recreated: 'same', mode: 'same' },
+        new Set(['recreated', 'mode']),
+      ),
+    ).toEqual(['mode', 'recreated'])
   })
   it('does not disguise safety or data documents as ordinary docs', () => {
     expect(classify('docs/repository-policy.md')).toBe('gate')

@@ -1,4 +1,8 @@
 import { sql } from 'drizzle-orm'
+export * from './identity.js'
+export * from './points.js'
+export * from './modes.js'
+import { identityPrincipals, identityOwners } from './identity.js'
 import {
   pgTable,
   text,
@@ -304,6 +308,11 @@ export const gameSessions = pgTable(
   {
     id: uuid('id').primaryKey().defaultRandom(),
     ownerHash: text('owner_hash').notNull(),
+    modeContract: text('mode_contract', { enum: ['legacy', 'quick-v2'] })
+      .notNull()
+      .default('legacy'),
+    principalId: uuid('principal_id').references(() => identityPrincipals.id),
+    revision: integer('revision').notNull().default(1),
     answerDriverId: text('answer_driver_id').notNull(),
     datasetVersion: text('dataset_version')
       .notNull()
@@ -322,6 +331,15 @@ export const gameSessions = pgTable(
   },
   (t) => [
     unique('game_id_version_uq').on(t.id, t.datasetVersion),
+    unique('game_principal_pair_uq').on(t.id, t.principalId),
+    foreignKey({
+      columns: [t.ownerHash, t.principalId],
+      foreignColumns: [identityOwners.ownerHash, identityOwners.principalId],
+      name: 'game_owner_principal_fk',
+    }),
+    uniqueIndex('quick_one_active_uq')
+      .on(t.principalId)
+      .where(sql`${t.modeContract}='quick-v2' AND ${t.status} IN ('active','playing')`),
     index('game_owner_idx').on(t.ownerHash, t.createdAt),
     foreignKey({
       columns: [t.answerDriverId, t.datasetVersion],
@@ -337,7 +355,7 @@ export const gameSessions = pgTable(
     check('game_difficulty_check', sql`${t.difficulty} IN ('beginner','normal','historical')`),
     check(
       'game_attempts_check',
-      sql`${t.attemptsUsed} >= 0 AND ${t.attemptsUsed} <= ${t.maxAttempts} AND ((${t.difficulty} IN ('beginner','normal') AND ${t.maxAttempts}=8) OR (${t.difficulty}='historical' AND ${t.maxAttempts}=10))`,
+      sql`${t.attemptsUsed} BETWEEN 0 AND ${t.maxAttempts} AND ((${t.modeContract}='legacy' AND ${t.principalId} IS NULL AND ((${t.difficulty} IN ('beginner','normal') AND ${t.maxAttempts}=8) OR (${t.difficulty}='historical' AND ${t.maxAttempts}=10))) OR (${t.modeContract}='quick-v2' AND ${t.principalId} IS NOT NULL AND ${t.rulesVersion}='v3' AND ${t.maxAttempts}=8)) AND ${t.revision}>0`,
     ),
     check(
       'game_state_check',
@@ -731,3 +749,4 @@ export const matchRateLimits = pgTable(
     ),
   ],
 )
+export * from './bo3.js'

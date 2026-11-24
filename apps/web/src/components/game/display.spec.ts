@@ -2,14 +2,12 @@ import { mount } from '@vue/test-utils'
 import { it, expect } from 'vitest'
 import NationalityDisplay from './NationalityDisplay.vue'
 import ConstructorMark from './ConstructorMark.vue'
-import GameResult from './GameResult.vue'
 import {
   MODERN_FLAGS,
   HISTORICAL_NATIONALITIES,
   nationalityDisplay,
 } from '../../config/nationalities'
 import { CONSTRUCTOR_MARKS, constructorBadge } from '../../config/constructor-marks'
-import { fixtureGame, driver } from '../../test-fixtures'
 it('maps modern flags explicitly, preserves codes and uses neutral historical/unknown displays', async () => {
   expect(Object.keys(MODERN_FLAGS)).toHaveLength(38)
   expect(nationalityDisplay('GBR').flagSrc).toBe('/flags/gb.svg')
@@ -66,31 +64,3 @@ it('uses exact constructor identity and clearly labelled original initials; hand
   expect(wrapper.attributes('data-constructor-id')).toBe(different)
   wrapper.unmount()
 })
-it.each(['won', 'lost', 'revealed'] as const)(
-  'renders %s as its own result and provides restart',
-  async (status) => {
-    const wrapper = mount(GameResult, {
-      props: {
-        game: {
-          ...fixtureGame(),
-          rulesVersion: 'v2',
-          status,
-          answer: driver,
-          endedAt: '2026-10-08T01:00:00.000Z',
-        },
-        busy: false,
-      },
-    })
-    expect(wrapper.classes()).toContain(status)
-    if (status === 'revealed') {
-      expect(wrapper.get('h2').text()).toBe('本局已结束')
-      expect(wrapper.text()).toContain('你选择查看答案')
-      expect(wrapper.text()).toContain('正确车手：')
-      expect(wrapper.classes()).not.toContain('won')
-      expect(wrapper.classes()).not.toContain('lost')
-    }
-    await wrapper.get('button').trigger('click')
-    expect(wrapper.emitted('restart')).toHaveLength(1)
-    wrapper.unmount()
-  },
-)

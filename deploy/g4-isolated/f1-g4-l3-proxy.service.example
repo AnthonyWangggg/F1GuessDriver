@@ -1,0 +1,41 @@
+[Unit]
+Description=Driver Guess isolated Nginx only
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=f1l3proxy
+Group=f1l3proxy
+Slice=f1-g4-l3.slice
+WorkingDirectory=/var/tmp/f1-g4/runtime/proxy
+ExecStartPre=/usr/bin/python3 -B /var/tmp/f1-g4/candidate/scripts/l3-p/linux-unit-preflight.py
+ExecStart=/usr/sbin/nginx -p /var/tmp/f1-g4/runtime/proxy/ -c /var/tmp/f1-g4/config/proxy/nginx.conf -g "daemon off;"
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGQUIT
+MemoryHigh=48M
+MemoryMax=64M
+MemorySwapMax=0
+TasksMax=32
+UMask=0077
+PrivateTmp=true
+BindReadOnlyPaths=/var/tmp/f1-g4/config/proxy /var/tmp/f1-g4/candidate/apps/web/dist
+BindReadOnlyPaths=/var/tmp/f1-g4/candidate/scripts/l3-p/linux-unit-preflight.py
+BindPaths=/var/tmp/f1-g4/runtime/proxy
+ReadWritePaths=/var/tmp/f1-g4/runtime/proxy
+InaccessiblePaths=-/etc/f1guessdriver -/etc/f1-guess -/opt/f1guessdriver -/var/backups/f1guessdriver -/etc/letsencrypt -/etc/postgresql -/var/lib/postgresql -/run/postgresql -/etc/ssl/private
+ProtectSystem=strict
+ProtectHome=true
+NoNewPrivileges=true
+RestrictSUIDSGID=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_UNIX AF_INET
+IPAddressDeny=any
+IPAddressAllow=localhost
+SocketBindDeny=any
+SocketBindAllow=ipv4:tcp:55449
+StandardOutput=journal
+StandardError=journal

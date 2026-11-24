@@ -42,10 +42,31 @@ export function prerequisiteFailed(id: string, failed: Set<string>) {
 export const digest = (value: unknown) =>
   createHash('sha256').update(JSON.stringify(value)).digest('hex')
 
-export function changedFiles(before: Record<string, string>, after: Record<string, string>) {
-  return [...new Set([...Object.keys(before), ...Object.keys(after)])]
-    .filter((file) => before[file] !== after[file])
+export function changedFiles(
+  before: Record<string, string>,
+  after: Record<string, string>,
+  observedChanges: Iterable<string> = [],
+) {
+  const observed = new Set(observedChanges)
+  return [...new Set([...Object.keys(before), ...Object.keys(after), ...observed])]
+    .filter((file) => observed.has(file) || before[file] !== after[file])
     .sort()
+}
+
+// Git's clean filters are authoritative for tracked source equivalence, including
+// text/eol attributes. Keep raw hashes elsewhere for caches and private audit inputs.
+export function gitEquivalentComparison(
+  before: Record<string, string>,
+  after: Record<string, string>,
+  tracked: readonly string[],
+  gitChanged: ReadonlySet<string>,
+) {
+  const comparable = { ...after }
+  for (const file of tracked) {
+    if (!gitChanged.has(file) && before[file] !== undefined && after[file] !== undefined)
+      comparable[file] = before[file]!
+  }
+  return comparable
 }
 export function classify(file: string): Scope {
   if (/pnpm-lock|pnpm-workspace|(^|\/)package\.json$/.test(file)) return 'dependency'
@@ -116,6 +137,7 @@ export function plan(level: Level, files: string[], scriptsOnly = false) {
       'exec',
       'vitest',
       'run',
+      ...(full ? ['--no-file-parallelism', '--testTimeout', '30000'] : []),
       ...(broad
         ? []
         : [
@@ -139,11 +161,11 @@ export function plan(level: Level, files: string[], scriptsOnly = false) {
     add('legacy', ['data:check-legacy'])
   }
   if (full || (level === 'standard' && scopes.has('web'))) {
-    add('e2e', ['exec', 'playwright', 'test'])
+    add('e2e', ['test:e2e:v3'])
   }
   if (full) {
     add('cross-browser', ['exec', 'playwright', 'test', '--config', 'playwright.cross.config.ts'])
-    add('visual', ['exec', 'tsx', 'scripts/test-p4b-visual.ts'])
+    add('visual', ['test:e2e:v3:visual'])
     add('release-pack', ['release:pack'])
     add('release-inspect', ['release:inspect'])
     add('production-smoke', ['release:smoke'])

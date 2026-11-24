@@ -1,6 +1,6 @@
 import { readFile, readdir, lstat } from 'node:fs/promises'
 import { resolve, dirname } from 'node:path'
-import { gameResponseSchema, gameOptionsSchema, driverSearchResponseSchema } from '@f1/shared'
+import { runtimeReadinessSchema, assertRuntimeCompatibility } from '@f1/shared'
 import {
   command,
   port,
@@ -120,6 +120,7 @@ export async function publicGenerationSample(
   // A sample may straddle the reload; both responses must independently be valid known versions.
   for (const state of new Map([served, apiState].map((s) => [s.slot, s])).values()) {
     const ready = await get(`http://127.0.0.1:${port(state.slot)}/api/ready`)
+    assertRuntimeCompatibility(ready.headers)
     if (!ready.ok || ((await ready.json()) as { status?: string }).status !== 'ok')
       throw new Error('Routed API readiness failed')
   }
@@ -166,57 +167,38 @@ export async function assertDrained() {
   }
   return true
 }
-export async function contract(oldBase: string, nextBase: string, origin: string, dataset: string) {
+export async function contract(
+  oldBase: string,
+  nextBase: string,
+  _origin: string,
+  dataset: string,
+) {
+  let keyset: string | undefined
+  const states: ReturnType<typeof runtimeReadinessSchema.parse>[] = []
   for (const base of new Set([oldBase, nextBase])) {
-    gameOptionsSchema.parse((await jsonRequest(base, '/api/game-options')).body)
-    driverSearchResponseSchema.parse(
-      (
-        await jsonRequest(
-          base,
-          `/api/drivers?search=hamilton&version=${encodeURIComponent(dataset)}`,
-        )
-      ).body,
-    )
+    const health = await jsonRequest(base, '/api/health')
+    if ((health.body as { status?: string }).status !== 'ok') throw new Error('Liveness failed')
+    const ready = await jsonRequest(base, '/api/runtime-readiness')
+    assertRuntimeCompatibility(ready.reply.headers)
+    const state = runtimeReadinessSchema.parse(ready.body)
+    states.push(state)
+    if (state.status !== 'ok' || state.schema !== 'compatible' || state.keyReadSet !== 'configured')
+      throw new Error('Runtime readiness failed')
+    if (state.datasetVersion !== dataset) throw new Error('Dataset compatibility mismatch')
+    if (state.features.bo3 && state.bo3Recovery !== 'ready') throw new Error('BO3 recovery blocked')
+    if (ready.reply.headers.has('set-cookie'))
+      throw new Error('Readiness must not create a session')
+    const tag = ready.reply.headers.get('x-f1-keyset')
+    if (!tag || tag === 'unconfigured' || (keyset && tag !== keyset))
+      throw new Error('Key read-set/signing compatibility mismatch; do not switch')
+    keyset = tag
   }
-  // Bounded release probe creates one real game; never print its ID, answer or Cookie.
-  const headers = {
-    origin,
-    'content-type': 'application/json',
-    'x-f1-game-contract': 'v3',
-    'sec-fetch-site': 'same-origin',
-  }
-  const created = await jsonRequest(nextBase, '/api/games', {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ difficulty: 'normal' }),
-  })
-  const game = gameResponseSchema.parse(created.body)
-  if (game.datasetVersion !== dataset || 'answer' in game)
-    throw new Error('Dataset/answer contract failed')
-  const cookie = created.reply.headers.get('set-cookie') ?? ''
+  // Old-slot matching may create a series after the probe. Both slots must retain recovery.
   if (
-    !/HttpOnly/i.test(cookie) ||
-    !/SameSite=Strict/i.test(cookie) ||
-    !/; Secure/i.test(cookie) ||
-    !/Path=\/api/i.test(cookie)
+    states.some((state) => state.features.bo3 || state.bo3Recovery === 'ready') &&
+    states.some((state) => state.bo3Recovery !== 'ready')
   )
-    throw new Error('Cookie contract failed')
-  for (const base of new Set([oldBase, nextBase])) {
-    const restored = gameResponseSchema.parse(
-      (
-        await jsonRequest(base, `/api/games/${game.id}`, {
-          headers: { ...headers, cookie: cookie.split(';')[0]! },
-        })
-      ).body,
-    )
-    if (JSON.stringify(restored) !== JSON.stringify(game))
-      throw new Error('Cross-slot session restore mismatch')
-    const denied = await fetch(`${base}/api/games/${game.id}`, {
-      headers,
-      signal: AbortSignal.timeout(10000),
-    })
-    if (![401, 404].includes(denied.status)) throw new Error('Anonymous ownership isolation failed')
-  }
+    throw new Error('Cross-slot BO3 recovery compatibility mismatch')
 }
 export async function createHost(config: HostConfig): Promise<Host> {
   const drained = await assertDrained()
@@ -226,8 +208,12 @@ export async function createHost(config: HostConfig): Promise<Host> {
     async ready(p) {
       for (let attempt = 0; attempt < 15; attempt++) {
         try {
-          const { body } = await jsonRequest(`http://127.0.0.1:${p}`, '/api/ready')
-          if ((body as { status?: string }).status === 'ok') return
+          const { body, reply } = await jsonRequest(
+            `http://127.0.0.1:${p}`,
+            '/api/runtime-readiness',
+          )
+          assertRuntimeCompatibility(reply.headers)
+          if (runtimeReadinessSchema.parse(body).status === 'ok') return
         } catch {
           /* Bounded startup retry. */
         }

@@ -1,0 +1,41 @@
+[Unit]
+Description=Driver Guess isolated PG18 only
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=f1l3pg
+Group=f1l3pg
+Slice=f1-g4-l3.slice
+WorkingDirectory=/var/tmp/f1-g4/pgdata
+ExecStartPre=/usr/bin/python3 -B /var/tmp/f1-g4/candidate/scripts/l3-p/linux-unit-preflight.py
+ExecStart=/usr/lib/postgresql/18/bin/postgres -D /var/tmp/f1-g4/pgdata -c config_file=/var/tmp/f1-g4/config/pg/postgresql.conf
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=60
+KillSignal=SIGINT
+MemoryHigh=192M
+MemoryMax=256M
+MemorySwapMax=0
+TasksMax=64
+UMask=0077
+PrivateTmp=true
+BindPaths=/var/tmp/f1-g4/pgdata /var/tmp/f1-g4/runtime/pg
+BindReadOnlyPaths=/var/tmp/f1-g4/config/pg
+BindReadOnlyPaths=/var/tmp/f1-g4/candidate/scripts/l3-p/linux-unit-preflight.py
+ReadWritePaths=/var/tmp/f1-g4/pgdata /var/tmp/f1-g4/runtime/pg
+InaccessiblePaths=-/etc/f1guessdriver -/etc/f1-guess -/opt/f1guessdriver -/var/backups/f1guessdriver -/etc/letsencrypt -/etc/postgresql -/var/lib/postgresql -/run/postgresql -/etc/ssl/private
+ProtectSystem=strict
+ProtectHome=true
+NoNewPrivileges=true
+RestrictSUIDSGID=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_UNIX AF_INET
+IPAddressDeny=any
+IPAddressAllow=localhost
+SocketBindDeny=any
+SocketBindAllow=ipv4:tcp:55439
+StandardOutput=journal
+StandardError=journal

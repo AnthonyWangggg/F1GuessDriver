@@ -1,0 +1,27 @@
+[Unit]
+Description=Driver Guess 3.0 (%i)
+After=network.target postgresql.service
+ConditionPathExists=/srv/f1-dual/state/%i/active/current/apps/server/dist/index.js
+[Service]
+Type=simple
+User=f1dg3_%i
+Group=f1dg3_%i
+WorkingDirectory=/srv/f1-dual/state/%i/active/current
+EnvironmentFile=/etc/f1-dual/%i.env
+ExecStart=/opt/f1-dual-toolchain/bin/node apps/server/dist/index.js
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+RestrictSUIDSGID=yes
+CapabilityBoundingSet=
+IPAddressDeny=any
+IPAddressAllow=localhost
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SyslogIdentifier=f1-dual-%i
+[Install]
+WantedBy=multi-user.target

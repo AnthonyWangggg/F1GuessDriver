@@ -34,8 +34,12 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
           }
         const journalPath = join(folder, 'meta', '_journal.json')
         const journal = JSON.parse(await readFile(journalPath, 'utf8')) as { entries: unknown[] }
-        expect(journal.entries).toHaveLength(9)
+        expect(journal.entries).toHaveLength(15)
         expect(journal.entries[8]).toMatchObject({ idx: 8, tag: '0008_random_matches' })
+        expect(journal.entries[9]).toMatchObject({ idx: 9, tag: '0009_identity_v1' })
+        expect(journal.entries[10]).toMatchObject({ idx: 10, tag: '0010_points_v1' })
+        expect(journal.entries[11]).toMatchObject({ idx: 11, tag: '0011_modes_v2' })
+        expect(journal.entries[12]).toMatchObject({ idx: 12, tag: '0012_bo3_v1' })
         await writeFile(
           journalPath,
           JSON.stringify({ ...journal, entries: journal.entries.slice(0, 4) }),
@@ -77,7 +81,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
           )
         ).rows[0]!.value
         expect(after).toEqual(before)
-        app = buildApp({ database: db.db })
+        app = buildApp({ legacyIdentityFixture: true, database: db.db })
         const headers = { cookie: `f1_player=${token}`, 'x-f1-game-contract': 'v2' }
         const restored = await app.inject({ method: 'GET', url: `/api/games/${id}`, headers })
         expect(restored.statusCode).toBe(200)
@@ -117,7 +121,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         expect(win.json().attributes.activeDecades).toBeDefined()
         expect(win.json().attributes.polePositions).toBeUndefined()
         await app.close()
-        app = buildApp({ database: db.db })
+        app = buildApp({ legacyIdentityFixture: true, database: db.db })
         const final = gameResponseSchema.parse(
           (await app.inject({ method: 'GET', url: `/api/games/${id}`, headers })).json(),
         )

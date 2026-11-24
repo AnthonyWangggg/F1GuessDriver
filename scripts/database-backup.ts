@@ -6,7 +6,9 @@ import { promisify } from 'node:util'
 import { randomBytes, randomUUID } from 'node:crypto'
 import { Pool } from '@f1/database'
 import { encryptBackup, decryptBackup, assertRestoreTarget } from './lib/backup.js'
-config({ quiet: true })
+// Controlled operations must never load legacy dotenv/default targets.
+const controlled = process.argv[2] === 'controlled'
+if (!controlled) config({ quiet: true })
 const exec = promisify(execFile)
 const mode = process.argv[2]
 let stage = 'configuration'
@@ -289,17 +291,24 @@ async function run() {
     }),
   )
 }
-run().catch((error: unknown) => {
-  const code =
-    typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    /^[A-Z0-9_]+$/.test(String(error.code))
-      ? String(error.code)
-      : 'WITHHELD'
-  console.error(JSON.stringify({ event: 'backup-failed', stage, code, category: failureCategory }))
-  console.error(
-    'Backup/restore failed. Check private configuration, target emptiness, permissions and PostgreSQL tools; sensitive details withheld.',
+if (controlled) {
+  void import('./controlled-backup.js').then(({ controlledMain }) =>
+    controlledMain(process.argv.slice(3)),
   )
-  process.exitCode = 1
-})
+} else
+  run().catch((error: unknown) => {
+    const code =
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      /^[A-Z0-9_]+$/.test(String(error.code))
+        ? String(error.code)
+        : 'WITHHELD'
+    console.error(
+      JSON.stringify({ event: 'backup-failed', stage, code, category: failureCategory }),
+    )
+    console.error(
+      'Backup/restore failed. Check private configuration, target emptiness, permissions and PostgreSQL tools; sensitive details withheld.',
+    )
+    process.exitCode = 1
+  })

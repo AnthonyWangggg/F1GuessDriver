@@ -1,21 +1,24 @@
 import { z } from 'zod'
+import { accountCsrfHeaders } from './identity'
 import {
-  gameResponseSchema,
-  guessResponseSchema,
   driverSearchResponseSchema,
   gameOptionsSchema,
   constructorsResponseSchema,
   errorResponseSchema,
   timelineResponseSchema,
   answerProfileSchema,
-  type Difficulty,
-  dailyMetadataSchema,
-  dailyEntrySchema,
-  dailyStatisticsSchema,
-  DAILY_CONTRACT,
 } from '@f1/shared'
 
 const messages: Record<string, string> = {
+  MODES_DISABLED: '该模式暂未开放，请稍后再试。',
+  DAILY_V2_NOT_READY: '正式每日挑战的积分服务尚未就绪，请稍后再试。',
+  ACTIVE_GAME_CONFIRMATION_REQUIRED: '存在未完成游戏，请刷新活动列表并确认新开。',
+  ACTIVE_GAME_CHANGED: '活动游戏已变化，请刷新后重新确认。',
+  CSRF_REQUIRED: '会话已变化，请刷新后重试。',
+  MODE_CONTRACT_REQUIRED: '请使用对应版本的游戏页面。',
+  POINTS_DISABLED: '积分与个人主页暂未开放。',
+  PROFILE_NOT_FOUND: '没有找到这个用户主页。',
+  ACCOUNT_SESSION_REQUIRED: '请重新登录后查看此身份的资料。',
   ANONYMOUS_SESSION_REQUIRED: '浏览器会话已失效，请开始新游戏。',
   GAME_NOT_FOUND: '无法恢复这局游戏，请开始新游戏。',
   DUPLICATE_GUESS: '这位车手已经猜过了，不会扣除次数。',
@@ -67,6 +70,7 @@ export async function request<T>(
       signal: controller.signal,
       headers: {
         'X-F1-Game-Contract': 'v3',
+        ...accountCsrfHeaders(),
         ...(init.body ? { 'Content-Type': 'application/json' } : {}),
         ...init.headers,
       },
@@ -93,21 +97,6 @@ export async function request<T>(
 const versionQuery = (version?: string) =>
   version ? `?version=${encodeURIComponent(version)}` : ''
 export const api = {
-  daily: () => request('/daily', dailyMetadataSchema),
-  dailyEnter: () =>
-    request('/daily/entry', dailyEntrySchema, {
-      method: 'POST',
-      body: '{}',
-      headers: { 'X-F1-Daily-Contract': DAILY_CONTRACT },
-    }),
-  dailyGame: (id: string) => request(`/daily/entries/${encodeURIComponent(id)}`, dailyEntrySchema),
-  dailyGuess: (id: string, driverId: string, idempotencyKey: string) =>
-    request(`/daily/entries/${encodeURIComponent(id)}/guess`, dailyEntrySchema, {
-      method: 'POST',
-      body: JSON.stringify({ driverId, idempotencyKey }),
-      headers: { 'X-F1-Daily-Contract': DAILY_CONTRACT },
-    }),
-  dailyStatistics: () => request('/daily/statistics', dailyStatisticsSchema),
   answerProfile: (id: string) =>
     request(`/games/${encodeURIComponent(id)}/answer-profile`, answerProfileSchema),
   timeline: (id: string, driverId: string) =>
@@ -118,19 +107,6 @@ export const api = {
   options: () => request('/game-options', gameOptionsSchema),
   constructors: (version: string) =>
     request(`/constructors${versionQuery(version)}`, constructorsResponseSchema),
-  create: (difficulty: Difficulty) =>
-    request('/games', gameResponseSchema, { method: 'POST', body: JSON.stringify({ difficulty }) }),
-  game: (id: string) => request(`/games/${encodeURIComponent(id)}`, gameResponseSchema),
-  reveal: (id: string) =>
-    request(`/games/${encodeURIComponent(id)}/reveal`, gameResponseSchema, {
-      method: 'POST',
-      body: '{}',
-    }),
-  guess: (id: string, driverId: string) =>
-    request(`/games/${encodeURIComponent(id)}/guess`, guessResponseSchema, {
-      method: 'POST',
-      body: JSON.stringify({ driverId }),
-    }),
   search: (search: string, version: string, signal: AbortSignal) =>
     request(`/drivers?${new URLSearchParams({ search, version })}`, driverSearchResponseSchema, {
       signal,

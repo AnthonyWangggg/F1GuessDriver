@@ -1,0 +1,47 @@
+# Isolated Linux candidate only; never install as a production unit.
+[Unit]
+Description=Driver Guess G4 isolated %i
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=f1l3test
+Group=f1l3test
+Slice=f1-g4-l3.slice
+WorkingDirectory=/var/tmp/f1-g4/candidate
+EnvironmentFile=/var/tmp/f1-g4/env/%i.test.env
+Environment=TMPDIR=/var/tmp/f1-g4/runtime/app-%i/tmp
+ExecStartPre=/usr/bin/python3 -B /var/tmp/f1-g4/candidate/scripts/l3-p/linux-unit-preflight.py
+ExecStartPre=/usr/bin/node --import tsx scripts/phase-g4/linux-start-guard.ts %i
+ExecStart=/usr/bin/node apps/server/dist/index.js
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=20
+TimeoutStopSec=20
+KillSignal=SIGTERM
+MemoryHigh=384M
+MemoryMax=512M
+MemorySwapMax=0
+TasksMax=64
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+# Host source is bound into this unit's private /var/tmp; only its own scratch is writable.
+BindReadOnlyPaths=/var/tmp/f1-g4/candidate
+BindPaths=/var/tmp/f1-g4/runtime/app-%i
+ReadWritePaths=/var/tmp/f1-g4/runtime/app-%i
+InaccessiblePaths=-/etc/f1guessdriver -/etc/f1-guess -/opt/f1guessdriver -/var/backups/f1guessdriver -/etc/letsencrypt -/etc/postgresql -/var/lib/postgresql -/run/postgresql -/etc/ssl/private
+IPAddressDeny=any
+IPAddressAllow=localhost
+SocketBindDeny=any
+SocketBindAllow=ipv4:tcp:55447
+SocketBindAllow=ipv4:tcp:55448
+ProtectSystem=strict
+ProtectHome=true
+RestrictSUIDSGID=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+StandardOutput=journal
+StandardError=journal

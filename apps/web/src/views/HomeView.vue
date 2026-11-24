@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter, RouterLink } from 'vue-router'
-import type { Difficulty } from '@f1/shared'
+import { RouterLink } from 'vue-router'
+import type { GameOptions } from '@f1/shared'
 import AppHeader from '../components/layout/AppHeader.vue'
 import AppFooter from '../components/layout/AppFooter.vue'
-import { useGameStore } from '../stores/game'
-import { modeLabels } from '../services/display'
-const store = useGameStore(),
-  router = useRouter()
-const difficulty = ref<Difficulty>('beginner')
+import { api } from '../services/api'
+import { useModesStore } from '../stores/modes'
+import ModeGlyph from '../components/common/ModeGlyph.vue'
+const modes = useModesStore()
+const options = ref<GameOptions>()
 onMounted(() => {
-  void store.loadOptions()
+  void modes.loadCapabilities()
+  void api
+    .options()
+    .then((value) => (options.value = value))
+    .catch(() => {
+      options.value = undefined
+    })
 })
-async function start() {
-  const id = await store.create(difficulty.value)
-  if (id) await router.push(`/game/${id}`)
-}
 </script>
 <template>
   <AppHeader />
@@ -33,7 +35,7 @@ async function start() {
         <span class="art-label">THE WORLD CHAMPIONSHIP ARCHIVE</span>
         <div class="art-years">
           1950<span>→</span
-          ><span class="outline-year">{{ store.options?.statsAsOf.slice(0, 4) ?? 'TODAY' }}</span>
+          ><span class="outline-year">{{ options?.statsAsOf.slice(0, 4) ?? 'TODAY' }}</span>
         </div>
         <svg class="track-art" viewBox="0 0 400 140" fill="none" aria-hidden="true">
           <path
@@ -52,73 +54,62 @@ async function start() {
         </svg>
         <div class="art-bottom">
           <div>
-            <strong>{{ store.options?.eligibleDrivers ?? '—' }}</strong
+            <strong>{{ options?.eligibleDrivers ?? '—' }}</strong
             ><span>位历史车手 · 一个隐藏答案</span>
           </div>
           <span class="checkers" aria-hidden="true"></span>
         </div>
       </div>
     </section>
-    <section id="grid" class="start-grid" aria-labelledby="grid-title">
+    <section id="grid" class="start-grid" aria-labelledby="modes-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">CHOOSE YOUR GRID</p>
-          <h2 id="grid-title">你的发车位，你来选。</h2>
+          <p class="eyebrow">THREE WAYS TO RACE</p>
+          <h2 id="modes-title">选择你的挑战</h2>
         </div>
-        <span class="section-note">/</span>
+        <span class="section-note">同一份热爱，三种发车方式。</span>
       </div>
-      <p v-if="store.optionsLoading" role="status" class="notice">正在读取发车格…</p>
-      <div v-if="store.optionsError" class="notice error" role="alert">
-        {{ store.optionsError }}
-        <button class="text-link" @click="store.loadOptions">重新加载</button>
-      </div>
-      <div v-if="store.options" class="mode-grid" role="radiogroup" aria-label="游戏难度">
-        <button
-          v-for="(mode, index) in store.options.modes"
-          :key="mode.difficulty"
-          class="mode-card"
-          :class="{ chosen: difficulty === mode.difficulty }"
-          role="radio"
-          :aria-checked="difficulty === mode.difficulty"
-          :aria-label="modeLabels[mode.difficulty].name"
-          @click="difficulty = mode.difficulty"
+      <div class="mode-grid">
+        <RouterLink
+          v-for="item in [
+            {
+              id: 'daily',
+              name: '每日一题',
+              description: '三个难度，三份每日答案。猜中一题，获得 +1 积分。',
+              available: modes.capabilities?.daily,
+            },
+            {
+              id: 'quick',
+              name: '快速游戏',
+              description: '自由选择难度，八次猜测找出车手。随时继续，不计积分。',
+              available: modes.capabilities?.quick,
+            },
+            {
+              id: 'match',
+              name: '随机匹配',
+              description: '同难度 BO3 对决。先拿两胜，争取整场 +3 积分。',
+              available: modes.capabilities?.matching,
+            },
+          ] as const"
+          :key="item.id"
+          class="mode-entry"
+          :data-mode="item.id"
+          :to="'/play/' + item.id"
+          ><ModeGlyph class="mode-icon" :mode="item.id" /><span
+            class="status-badge"
+            :data-tone="item.available ? 'success' : 'warning'"
+            >{{
+              !modes.capabilities ? '正在读取开放状态' : item.available ? '已开放' : '暂未开放'
+            }}</span
+          >
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.description }}</p>
+          <span class="entry-action"
+            >{{ item.available ? '选择难度' : '查看开放状态'
+            }}<span aria-hidden="true">↗</span></span
+          ></RouterLink
         >
-          <div class="mode-top">
-            <span class="eyebrow">0{{ index + 1 }} / {{ modeLabels[mode.difficulty].english }}</span
-            ><span class="radio-mark" aria-hidden="true"></span>
-          </div>
-          <h3>{{ modeLabels[mode.difficulty].name }}</h3>
-          <p>{{ modeLabels[mode.difficulty].description }}</p>
-          <div class="mode-stats">
-            <span
-              ><strong>{{ mode.answerCount }}</strong> 位车手</span
-            ><span
-              ><strong>{{ mode.maxAttempts }}</strong> 次机会</span
-            >
-          </div>
-        </button>
       </div>
-      <div class="start-actions">
-        <button
-          class="button primary"
-          :disabled="!store.options || store.busy || store.optionsLoading"
-          @click="start"
-        >
-          {{ store.busy ? '正在发车…' : '开始游戏' }} →</button
-        ><RouterLink
-          class="button daily-action"
-          to="/daily"
-          tabindex="0"
-          aria-describedby="daily-entry-help"
-          >每日一题 →</RouterLink
-        ><RouterLink v-if="store.resumeId" class="button secondary" :to="`/game/${store.resumeId}`"
-          >继续上一局 ↗</RouterLink
-        ><span id="daily-entry-help" class="muted">北京时间 00:00 更新 · 8次机会</span>
-      </div>
-      <p v-if="store.error" class="notice error" role="alert">{{ store.error }}</p>
-      <RouterLink class="text-link match-entry-link" to="/match"
-        >随机匹配 · 与另一位访客同题对战 →</RouterLink
-      >
     </section>
     <section id="rules" class="rules-section" aria-labelledby="rules-title">
       <div class="section-heading">
@@ -152,5 +143,5 @@ async function start() {
       </div>
     </section>
   </main>
-  <AppFooter :date="store.options?.statsAsOf" />
+  <AppFooter :date="options?.statsAsOf" />
 </template>

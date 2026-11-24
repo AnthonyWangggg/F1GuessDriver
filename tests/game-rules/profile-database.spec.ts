@@ -21,6 +21,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         try {
           for (const ending of ['won', 'lost', 'revealed'] as const) {
             const app = buildApp({
+              legacyIdentityFixture: true,
               database: db.db,
               datasetVersion: versions[rules],
               allowLegacyCreation: rules !== 'v3',

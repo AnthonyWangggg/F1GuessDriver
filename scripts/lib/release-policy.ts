@@ -13,6 +13,10 @@ export function prohibited(path: string): boolean {
   const p = path.replaceAll('\\', '/')
   return (
     /^deploy\/(?:p4[^/]*|private-access|public-prep)\//.test(p) ||
+    /^docs\/v3\/private(?:\/|$)/i.test(p) ||
+    /^(?:PROD-|STG-|PRODUCTION-INVENTORY)[^/]*\.md$/i.test(p) ||
+    /(?:^|\/)(?:\.ssh(?:\/|$)|id_rsa$|id_ed25519$)/i.test(p) ||
+    /\.(?:har|ppk|p12|pfx|p7b|kdbx)$/i.test(p) ||
     (p.startsWith('reports/') &&
       !['reports/pole-audit/audit.json', 'reports/pole-audit/legacy-baseline.json'].includes(p)) ||
     (p.endsWith('.sql') && !/(^|\/)(packages\/database|@f1\/database)\/migrations\//.test(p)) ||

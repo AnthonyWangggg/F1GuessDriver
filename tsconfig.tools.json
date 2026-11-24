@@ -10,6 +10,7 @@
     "vitest.config.ts",
     "playwright.config.ts",
     "playwright.cross.config.ts",
+    "playwright.phase-e.config.ts",
     "apps/web/vite.config.ts",
     "apps/server/src/**/*.spec.ts",
     "scripts/**/*.ts",

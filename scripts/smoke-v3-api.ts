@@ -13,7 +13,7 @@ import { buildApp } from '../apps/server/src/app.js'
 import { main, withDatabase } from './lib/runtime.js'
 main(() =>
   withDatabase(async (db) => {
-    let app = buildApp({ database: db }),
+    let app = buildApp({ legacyIdentityFixture: true, database: db }),
       base = '',
       cookie = ''
     const start = async () => {
@@ -102,7 +102,7 @@ main(() =>
           assert.equal(win.status, 'won')
         }
         await app.close()
-        app = buildApp({ database: db })
+        app = buildApp({ legacyIdentityFixture: true, database: db })
         await start()
         const restored = gameResponseSchema.parse(
           (await call(`/api/games/${game.id}`, undefined, owner)).body,
@@ -121,6 +121,7 @@ main(() =>
       for (const version of [DEFAULT_DATASET_VERSION, 'f1-2026-10-08-2190d6c32d9f664f']) {
         await app.close()
         app = buildApp({
+          legacyIdentityFixture: true,
           database: db,
           datasetVersion: version,
           allowLegacyCreation: true,
@@ -136,7 +137,7 @@ main(() =>
         await call(`/api/games/${created.id}/guess`, { driverId: 'jolpica:driver:senna' })
         const before = gameResponseSchema.parse((await call(`/api/games/${created.id}`)).body)
         await app.close()
-        app = buildApp({ database: db })
+        app = buildApp({ legacyIdentityFixture: true, database: db })
         await start()
         assert.deepEqual(
           gameResponseSchema.parse((await call(`/api/games/${created.id}`, undefined, owner)).body)

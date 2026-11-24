@@ -1,0 +1,8 @@
+-- Documentation template only; no activation is included in any migration or runtime startup.
+-- Production activation requires separate owner approval, an authoritative Phase C/D source
+-- adapter and audited maintenance credentials. f1_app cannot execute this INSERT.
+-- Supply reviewed effective_at and approval_reference through your maintenance tooling.
+-- Never copy an isolated test activation into a production database.
+-- INSERT INTO points_rule_activations(version,effective_at,rule_summary,approved_by)
+-- VALUES ('points-v1', :reviewed_effective_at,
+-- 'daily-v2:success=1;match-v2-bo3:win=3,loss=-1;floor=0', :approval_reference);

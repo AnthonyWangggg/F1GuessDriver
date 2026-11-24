@@ -1,0 +1,6 @@
+{
+  "format": "first-prod-authorization-v1",
+  "planSha256": "REPLACE_AFTER_REVIEW",
+  "grants": {},
+  "rollbackDataWindowApproval": ""
+}

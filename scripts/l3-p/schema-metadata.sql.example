@@ -1,0 +1,106 @@
+-- Manual administrator-only metadata query; no EnvironmentFile or business row reads.
+\set ON_ERROR_STOP on
+\if :{?app_role}
+\else
+\echo BLOCKED: provide approved runtime role name using -v app_role; never a password.
+\quit 2
+\endif
+BEGIN READ ONLY;
+SET LOCAL statement_timeout = '2000ms';
+SELECT EXISTS(SELECT 1 FROM pg_roles WHERE rolname=:'app_role') AS approved_role_exists \gset
+COMMIT;
+\if :approved_role_exists
+\else
+\echo BLOCKED: approved role absent or invisible.
+\quit 2
+\endif
+BEGIN READ ONLY;
+SET LOCAL statement_timeout = '2000ms';
+SET LOCAL lock_timeout = '500ms';
+SET LOCAL idle_in_transaction_session_timeout = '5000ms';
+SELECT current_setting('server_version') AS pg_version,
+       to_regclass('drizzle.__drizzle_migrations') IS NOT NULL AS journal_exists;
+
+SELECT table_name, column_name, data_type
+FROM information_schema.columns
+WHERE table_schema='public' AND table_name IN (
+ 'identity_principals','identity_owners','identity_accounts','identity_sessions',
+ 'identity_claims','identity_tokens','identity_mail_outbox','identity_requests','identity_recovery_requests',
+ 'points_rule_activations','points_balances','points_ledger',
+ 'bo3_series','bo3_events','bo3_guesses','bo3_requests','identity_recovery_requests')
+ORDER BY table_name,ordinal_position LIMIT 200;
+
+SELECT c.relname, k.conname, k.contype, k.convalidated,
+       md5(pg_get_constraintdef(k.oid)) AS definition_digest
+FROM pg_constraint k JOIN pg_class c ON c.oid=k.conrelid
+JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname='public' AND c.relname IN (
+ 'identity_accounts','identity_owners','identity_claims',
+ 'points_balances','points_ledger','bo3_series')
+ORDER BY c.relname,k.conname LIMIT 200;
+
+SELECT c.relname,t.tgname,t.tgenabled,t.tgdeferrable,t.tginitdeferred,
+       p.proname, md5(pg_get_triggerdef(t.oid)) AS definition_digest
+FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid
+JOIN pg_namespace n ON n.oid=c.relnamespace
+JOIN pg_proc p ON p.oid=t.tgfoid
+WHERE n.nspname='public' AND c.relname IN (
+ 'bo3_series','bo3_events','bo3_rounds','points_ledger') AND NOT t.tgisinternal
+ORDER BY c.relname,t.tgname LIMIT 200;
+
+SELECT p.proname,pg_get_function_identity_arguments(p.oid) AS arguments,
+       p.prosecdef,has_function_privilege(:'app_role',p.oid,'EXECUTE') AS app_execute,
+       EXISTS(SELECT 1 FROM aclexplode(coalesce(p.proacl,acldefault('f',p.proowner))) a
+         WHERE a.grantee=0 AND a.privilege_type='EXECUTE') AS public_execute
+FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+WHERE n.nspname='public' AND p.proname IN (
+ 'bo3_participation','bo3_points_guard','bo3_event_guard',
+ 'bo3_ledger_eligibility_guard','bo3_terminal_points_check','bo3_immutable')
+ORDER BY p.proname,p.oid LIMIT 20;
+
+SELECT c.relname, c.relowner=(SELECT oid FROM pg_roles WHERE rolname=:'app_role') AS app_owner,
+       has_table_privilege(:'app_role',c.oid,'SELECT') AS can_select,
+       has_table_privilege(:'app_role',c.oid,'INSERT') AS can_insert,
+       has_table_privilege(:'app_role',c.oid,'UPDATE') AS can_update,
+       has_any_column_privilege(:'app_role',c.oid,'UPDATE') AS any_column_update,
+       has_table_privilege(:'app_role',c.oid,'DELETE') AS can_delete,
+       has_table_privilege(:'app_role',c.oid,'TRUNCATE') AS can_truncate,
+       pg_has_role(:'app_role',c.relowner,'USAGE') AS inherits_owner_rights
+FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname='public' AND c.relkind='r' AND c.relname IN (
+ 'points_ledger','points_rule_activations','bo3_players',
+ 'bo3_events','bo3_guesses','bo3_requests','identity_recovery_requests')
+ORDER BY c.relname LIMIT 20;
+
+SELECT rolsuper,rolcreatedb,rolcreaterole,rolreplication,rolbypassrls
+FROM pg_roles WHERE rolname=:'app_role' LIMIT 1;
+COMMIT;
+
+BEGIN READ ONLY;
+SET LOCAL statement_timeout = '2000ms';
+SET LOCAL lock_timeout = '500ms';
+SELECT c.relname AS table_name, i.relname AS index_name,
+       x.indisunique,x.indisvalid,x.indisready,
+       md5(pg_get_indexdef(i.oid)) AS definition_digest
+FROM pg_index x JOIN pg_class c ON c.oid=x.indrelid
+JOIN pg_class i ON i.oid=x.indexrelid
+JOIN pg_namespace n ON n.oid=c.relnamespace
+WHERE n.nspname='public' AND c.relname IN (
+ 'identity_claims','identity_recovery_requests','points_ledger','bo3_series','bo3_events')
+ORDER BY c.relname,i.relname LIMIT 80;
+COMMIT;
+
+BEGIN READ ONLY;
+SET LOCAL statement_timeout = '2000ms';
+SELECT to_regclass('drizzle.__drizzle_migrations') IS NOT NULL AS journal_exists \gset
+COMMIT;
+\if :journal_exists
+BEGIN READ ONLY;
+SET LOCAL statement_timeout = '2000ms';
+SET LOCAL lock_timeout = '500ms';
+SELECT id,hash,created_at FROM drizzle.__drizzle_migrations ORDER BY id LIMIT 33;
+COMMIT;
+\else
+\echo BLOCKED: migration journal absent; no table is created.
+\quit 2
+\endif
