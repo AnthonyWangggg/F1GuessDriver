@@ -1,0 +1,38 @@
+-- Run as the schema administrator after revoking temporary membership, before starting the app.
+-- Replace f1_v3_migrator with the dedicated NOLOGIN role that owns the newly created tables.
+-- PostgreSQL's RI trigger checks a referenced row as the referenced table's owner.
+-- Preserve that owner's ability to resolve its schema after role membership is removed.
+BEGIN;
+DO $owner$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_class parent
+    JOIN pg_roles owner ON owner.oid = parent.relowner
+    WHERE parent.oid = 'public.identity_principals'::regclass
+      AND owner.rolname = 'f1_v3_migrator'
+      AND NOT owner.rolcanlogin AND NOT owner.rolsuper
+      AND NOT has_schema_privilege(owner.oid, 'public', 'CREATE')
+  ) THEN
+    RAISE EXCEPTION 'Expected the finalized, non-login identity table owner';
+  END IF;
+END
+$owner$;
+GRANT USAGE ON SCHEMA public TO f1_v3_migrator;
+
+-- Check all public FK parents, including parents retained from earlier migrations.
+DO $check$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM pg_constraint fk
+    JOIN pg_class parent ON parent.oid = fk.confrelid
+    JOIN pg_namespace ns ON ns.oid = parent.relnamespace
+    WHERE fk.contype = 'f' AND ns.nspname = 'public'
+      AND NOT has_schema_privilege(parent.relowner, ns.oid, 'USAGE')
+  ) THEN
+    RAISE EXCEPTION 'A foreign-key parent owner cannot use its schema';
+  END IF;
+END
+$check$;
+COMMIT;

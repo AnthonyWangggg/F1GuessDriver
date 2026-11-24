@@ -130,6 +130,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
       .insert(constructors)
       .values({ id: 'jolpica:constructor:fixture', externalId: 'fixture', name: 'Fixture Racing' })
     app = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: DEFAULT_DATASET_VERSION,
@@ -141,6 +142,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   beforeEach(async () => {
     if (app) await app.close()
     app = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: DEFAULT_DATASET_VERSION,
@@ -227,6 +229,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
     expect(profile.statusCode).toBe(200)
     expect(profile.json()).not.toHaveProperty('answer')
     const otherApp = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: DEFAULT_DATASET_VERSION,
@@ -344,6 +347,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   it('locks old games to their snapshot even when default version changes', async () => {
     const { game, cookie } = await create()
     const newApp = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: nextVersion,
@@ -379,6 +383,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   })
   it('refuses missing/invalid versions and rejects ineligible input without consuming attempts', async () => {
     const missing = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: 'missing',
@@ -418,6 +423,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   })
   it('finishes v2 wins and exhausted losses, and rejects reveal on either final state', async () => {
     const modern = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: poleVersion,
@@ -471,6 +477,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   it('keeps stale browser v1 contracts usable and rejects incompatible v2 mutations before consuming attempts', async () => {
     const old = await create('historical'),
       modern = buildApp({
+        legacyIdentityFixture: true,
         allowLegacyCreation: true,
         database: database.db,
         datasetVersion: poleVersion,
@@ -547,6 +554,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   })
   it('serializes two simultaneous reveals into one transition', async () => {
     const modern = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: poleVersion,
@@ -580,6 +588,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   })
   it('simulates pre-v3 v2 creation without silently falling back to v1', async () => {
     const modern = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       chooseIndex: () => 0,
@@ -620,6 +629,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
   })
   it('reveals with ownership, consumes no attempts, persists after restart and rejects repeats', async () => {
     const modern = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: poleVersion,
@@ -679,7 +689,11 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
           })
         ).statusCode,
       ).toBe(409)
-      const restarted = buildApp({ allowLegacyCreation: true, database: database.db })
+      const restarted = buildApp({
+        legacyIdentityFixture: true,
+        allowLegacyCreation: true,
+        database: database.db,
+      })
       try {
         expect(
           (
@@ -711,6 +725,7 @@ describe.skipIf(!connection)('P2 PostgreSQL games and API', () => {
       })
     ).json().guesses[0]
     const modern = buildApp({
+      legacyIdentityFixture: true,
       allowLegacyCreation: true,
       database: database.db,
       datasetVersion: poleVersion,

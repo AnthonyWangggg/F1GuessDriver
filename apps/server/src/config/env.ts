@@ -1,6 +1,38 @@
 import { z } from 'zod'
+import { parseKeyring, parseRelay } from './identity-runtime.js'
 
 const envSchema = z.object({
+  UPGRADE_MAINTENANCE: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  IDENTITY_KEYRING_JSON: z.string().optional(),
+  MAIL_RELAY_JSON: z.string().optional(),
+  MAIL_DELIVERY_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  AUTH_HASH_CONCURRENCY: z.coerce.number().int().min(1).max(2).default(1),
+  BO3_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  BO3_RECOVERY_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  MODES_ENTRY_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  QUICK_V2_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
+  DAILY_V2_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   TRUST_PROXY: z.enum(['none', 'loopback']).default('none'),
   DB_POOL_MAX: z.coerce.number().int().min(1).max(50).default(10),
@@ -16,15 +48,19 @@ const envSchema = z.object({
     })
     .optional(),
   GAME_DATASET_VERSION: z.string().min(1).optional(),
-  DAILY_CHALLENGE_ENABLED: z
-    .enum(['true', 'false'])
-    .default('false')
-    .transform((value) => value === 'true'),
-  MATCHMAKING_ENABLED: z
-    .enum(['true', 'false'])
-    .default('false')
-    .transform((value) => value === 'true'),
   COOKIE_SECURE: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((value) => value === 'true'),
+  IDENTITY_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((value) => value === 'true'),
+  IDENTITY_ENCRYPTION_KEY: z
+    .string()
+    .regex(/^[a-f0-9]{64}$/)
+    .optional(),
+  POINTS_ENABLED: z
     .enum(['true', 'false'])
     .default('false')
     .transform((value) => value === 'true'),
@@ -48,6 +84,29 @@ export function parseEnv(env: NodeJS.ProcessEnv) {
       `Invalid environment fields: ${[...new Set(result.error.issues.map((issue) => issue.path[0]))].join(', ')}`,
     )
   const value = result.data
+  if (value.IDENTITY_KEYRING_JSON && value.IDENTITY_ENCRYPTION_KEY)
+    throw new Error('Select exactly one identity key configuration')
+  if (value.IDENTITY_KEYRING_JSON) parseKeyring(value.IDENTITY_KEYRING_JSON)
+  if (value.MAIL_RELAY_JSON) parseRelay(value.MAIL_RELAY_JSON)
+  if (value.MAIL_DELIVERY_ENABLED && !value.MAIL_RELAY_JSON)
+    throw new Error(
+      'Mail delivery requires explicit reviewed production mail adapter configuration',
+    )
+  const hasKey = Boolean(value.IDENTITY_ENCRYPTION_KEY || value.IDENTITY_KEYRING_JSON)
+  if (
+    (value.MODES_ENTRY_ENABLED ||
+      value.QUICK_V2_ENABLED ||
+      value.DAILY_V2_ENABLED ||
+      value.BO3_ENABLED ||
+      value.BO3_RECOVERY_ENABLED) &&
+    (!value.DATABASE_URL || !hasKey)
+  )
+    throw new Error('New modes require DATABASE_URL and IDENTITY_ENCRYPTION_KEY')
+  if (value.POINTS_ENABLED && !value.DATABASE_URL) throw new Error('Points require DATABASE_URL')
+  if (value.IDENTITY_ENABLED && (!value.DATABASE_URL || !hasKey))
+    throw new Error('Identity requires DATABASE_URL and IDENTITY_ENCRYPTION_KEY')
+  if (value.MAIL_DELIVERY_ENABLED)
+    throw new Error('Mail delivery is retired for username-recovery-v2; keep disabled')
   for (const origin of value.ALLOWED_ORIGINS ?? []) {
     try {
       const parsed = new URL(origin)

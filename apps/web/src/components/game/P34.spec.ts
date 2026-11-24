@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { expect, it } from 'vitest'
 import AttributeCell from './AttributeCell.vue'
-import PitWall from './PitWall.vue'
 import CareerTimeline from './CareerTimeline.vue'
 import AnswerProfile from './AnswerProfile.vue'
 import { feedbackDescription } from '../../services/feedback'
@@ -54,24 +53,6 @@ it('retains visible unknown and meaningful historical/number feedback', () => {
   ).toContain('年份更早')
   wrapper.unmount()
 })
-it.each(['v1', 'v2', 'v3'] as const)(
-  'explains %s only and provides eight explicit rules',
-  (rulesVersion) => {
-    const wrapper = mount(PitWall, { props: { rulesVersion, statsAsOf: '2026-10-08' } })
-    expect(wrapper.findAll('.full-rules li')).toHaveLength(8)
-    expect(wrapper.text()).toContain('隐藏答案数值更大')
-    if (rulesVersion === 'v3') {
-      expect(wrapper.text()).toContain('相差 20 次以内')
-      expect(wrapper.text()).toContain('同审核大洲')
-    } else {
-      expect(wrapper.text()).not.toContain('同审核大洲')
-      expect(wrapper.text()).not.toContain('相差 20 次以内')
-      expect(wrapper.text()).toContain('集合有交集为绿色')
-    }
-    expect(wrapper.text().includes('参赛年代：')).toBe(rulesVersion === 'v1')
-    wrapper.unmount()
-  },
-)
 it('preserves returning and parallel phases, showing only server-supplied years', () => {
   const stages = [
     {

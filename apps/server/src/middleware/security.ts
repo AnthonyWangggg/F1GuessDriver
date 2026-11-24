@@ -1,9 +1,15 @@
 import { createHash, randomBytes } from 'node:crypto'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { ApiError } from '../services/errors.js'
+import { accesses } from '../identity/access.js'
 
 export const ANONYMOUS_COOKIE = 'f1_player'
 export function ownerIdentity(request: FastifyRequest): { token: string; hash: string } | null {
+  const access = accesses.get(request)
+  if (access) return access.ownerHash ? { token: '', hash: access.ownerHash } : null
+  return rawOwnerIdentity(request)
+}
+export function rawOwnerIdentity(request: FastifyRequest): { token: string; hash: string } | null {
   const values = (request.headers.cookie ?? '')
     .split(';')
     .map((v) => v.trim())
@@ -15,10 +21,11 @@ export function ownerIdentity(request: FastifyRequest): { token: string; hash: s
 }
 export function createIdentity(reply: FastifyReply, secure: boolean) {
   const token = randomBytes(32).toString('hex')
-  reply.header(
-    'set-cookie',
+  const previous = reply.getHeader('set-cookie')
+  reply.header('set-cookie', [
+    ...(Array.isArray(previous) ? previous.map(String) : previous ? [String(previous)] : []),
     `${ANONYMOUS_COOKIE}=${token}; Path=/api; HttpOnly; SameSite=Strict; Max-Age=31536000${secure ? '; Secure' : ''}`,
-  )
+  ])
   return createHash('sha256').update(token).digest('hex')
 }
 export function requireIdentity(request: FastifyRequest) {

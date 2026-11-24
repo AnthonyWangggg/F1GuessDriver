@@ -1,0 +1,17 @@
+-- Reviewed identity-v1 runtime extension; execute only with separate migration approval.
+-- f1_app must already be a NOSUPERUSER NOCREATEDB NOCREATEROLE role.
+GRANT SELECT, INSERT ON identity_principals TO f1_app;
+GRANT SELECT, INSERT, UPDATE ON identity_owners, identity_accounts, identity_sessions,
+    identity_claims, identity_tokens, identity_mail_outbox, identity_rate_limits TO f1_app;
+GRANT SELECT, INSERT ON identity_requests TO f1_app;
+-- Existing daily-v1/match-v1 runtime permissions, including identity sequence.
+GRANT SELECT, INSERT, UPDATE ON daily_challenges, daily_entries, daily_rate_limits,
+    matches, match_queue, match_players, match_rate_limits TO f1_app;
+GRANT SELECT, INSERT ON daily_guesses, daily_submissions, match_guesses, match_requests TO f1_app;
+GRANT SELECT, INSERT, DELETE ON match_memberships TO f1_app;
+GRANT USAGE, SELECT ON SEQUENCE match_queue_position_seq TO f1_app;
+-- No DELETE on identity/history, no DDL, no history statistics writes.
+-- Backup grants for new tables must be separately reviewed by the administrator.
+
+-- account-v2: immutable operation receipt contains no recovery plaintext.
+GRANT SELECT, INSERT ON identity_recovery_requests TO f1_app;

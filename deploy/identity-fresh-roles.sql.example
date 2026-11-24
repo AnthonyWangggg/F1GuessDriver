@@ -1,0 +1,6 @@
+-- Fresh 3.0 runtime ACL. Apply after creating the roles and migrating the database.
+GRANT SELECT, INSERT ON public.identity_principals TO f1_app;
+GRANT SELECT, INSERT, UPDATE ON public.identity_owners, public.identity_accounts,
+    public.identity_sessions, public.identity_claims, public.identity_tokens,
+    public.identity_mail_outbox, public.identity_rate_limits TO f1_app;
+GRANT SELECT, INSERT ON public.identity_requests, public.identity_recovery_requests TO f1_app;

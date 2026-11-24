@@ -1,0 +1,11 @@
+-- Reviewed template only. Maintenance operator replaces f1_app; never run against production here.
+GRANT SELECT,INSERT,UPDATE ON bo3_series,bo3_rounds,bo3_round_players,bo3_queue TO f1_app;
+GRANT SELECT,INSERT ON bo3_players,bo3_guesses,bo3_events,bo3_requests TO f1_app;
+GRANT SELECT,INSERT,DELETE ON bo3_memberships TO f1_app;
+GRANT USAGE,SELECT ON SEQUENCE bo3_queue_position_seq TO f1_app;
+REVOKE UPDATE,DELETE,TRUNCATE ON points_ledger FROM f1_app;
+REVOKE UPDATE,DELETE,TRUNCATE ON bo3_players,bo3_guesses,bo3_events,bo3_requests FROM f1_app;
+REVOKE DELETE,TRUNCATE ON bo3_series,bo3_rounds,bo3_round_players,bo3_queue FROM f1_app;
+-- G2 evidence reader is invoker-rights; do not expose execution to PUBLIC.
+REVOKE EXECUTE ON FUNCTION bo3_participation(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION bo3_participation(uuid) TO f1_app;

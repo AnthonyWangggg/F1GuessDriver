@@ -1,0 +1,24 @@
+-- Local isolated migration. Run as administrator on the disposable regression cluster.
+BEGIN;
+DO $check$
+BEGIN
+  IF current_database() !~ '^(v3_regression_|f1_(modes|bo3)_test_acceptance_)[a-f0-9]{12}$'
+    OR host(inet_server_addr()) IS DISTINCT FROM '127.0.0.1'
+    OR inet_server_port() IS DISTINCT FROM 55483
+    OR replace(current_setting('data_directory'), chr(92), '/') !~ '/local-private/local-v3-[a-f0-9]{8}/pgdata$'
+  THEN
+    RAISE EXCEPTION 'Expected a disposable local v3 regression database';
+  END IF;
+END
+$check$;
+
+DELETE FROM public.game_guesses AS guess
+USING public.game_sessions AS game
+WHERE guess.game_id = game.id AND game.mode_contract = 'legacy';
+DELETE FROM public.game_sessions WHERE mode_contract = 'legacy';
+
+DROP TABLE public.daily_submissions, public.daily_guesses, public.daily_entries,
+  public.daily_rate_limits, public.daily_challenges,
+  public.match_guesses, public.match_memberships, public.match_players,
+  public.match_requests, public.match_rate_limits, public.match_queue, public.matches RESTRICT;
+COMMIT;

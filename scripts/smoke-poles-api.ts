@@ -15,6 +15,7 @@ import { main, withDatabase, option } from './lib/runtime.js'
 main(() =>
   withDatabase(async (db) => {
     let app = buildApp({
+      legacyIdentityFixture: true,
       database: db,
       datasetVersion: DEFAULT_DATASET_VERSION,
       allowLegacyCreation: true,
@@ -68,7 +69,7 @@ main(() =>
         (await call(`/api/games/${legacy.game.id}`)).payload,
       ).guesses
       await app.close()
-      app = buildApp({ database: db })
+      app = buildApp({ legacyIdentityFixture: true, database: db })
       await start()
       const restored = gameResponseSchema.parse(
         (await call(`/api/games/${legacy.game.id}`, undefined, legacyCookie)).payload,
@@ -166,7 +167,7 @@ main(() =>
         409,
       )
       await app.close()
-      app = buildApp({ database: db })
+      app = buildApp({ legacyIdentityFixture: true, database: db })
       await start()
       assert.deepEqual(
         gameResponseSchema.parse(

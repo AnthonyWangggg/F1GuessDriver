@@ -1,0 +1,15 @@
+{
+  "context": {
+    "algorithmVersion": "bo3-seed-v1",
+    "seriesId": "00000000-0000-4000-8000-000000000001",
+    "contract": "match-v2-bo3",
+    "difficulty": "normal",
+    "datasetVersion": "synthetic-比赛",
+    "comparisonRulesVersion": "v3",
+    "slots": ["00000000-0000-4000-8000-000000000002", "00000000-0000-4000-8000-000000000003"]
+  },
+  "seedHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "commitment": "5ecfb065754bea8395b6208dd0de78fda5e7a6c9bc630319771218096108bdb9",
+  "digest": "d272ca2e53c1b01d599039748c0f9b3cd3d0f6acad6fa05f8b235f04b7552c25",
+  "winnerSlot": 0
+}

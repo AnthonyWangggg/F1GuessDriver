@@ -1,0 +1,6 @@
+# All credentials belong ONLY to the new standalone test cluster; no trust/peer fallback.
+local all all reject
+host all f1_bo3_test_app 127.0.0.1/32 scram-sha-256
+host all f1_l3_admin 127.0.0.1/32 scram-sha-256
+host all all 0.0.0.0/0 reject
+host all all ::0/0 reject

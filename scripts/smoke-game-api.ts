@@ -19,6 +19,7 @@ main(() =>
   withDatabase(async (db) => {
     // Explicit test-only creation simulates legacy sessions; production cannot create v1 games.
     let app = buildApp({
+      legacyIdentityFixture: true,
       database: db,
       datasetVersion: DEFAULT_DATASET_VERSION,
       allowLegacyCreation: true,
@@ -125,7 +126,7 @@ main(() =>
         report.push({ difficulty, id: game.id, status: final.status, attemptsUsed: attempts })
       }
       await app.close()
-      app = buildApp({ database: db })
+      app = buildApp({ legacyIdentityFixture: true, database: db })
       base = await start()
       for (const game of report) {
         const restored = gameResponseSchema.parse((await call(`/api/games/${game.id}`)).payload)

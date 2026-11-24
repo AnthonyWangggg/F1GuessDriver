@@ -1,0 +1,48 @@
+# Isolated loopback-only test configuration; no production TLS/domain or includes.
+pid /var/tmp/f1-g4/runtime/proxy/nginx.pid;
+error_log /var/tmp/f1-g4/runtime/proxy/error.log warn;
+worker_processes 1;
+worker_shutdown_timeout 20s;
+events { worker_connections 256; }
+http {
+    access_log off;
+    client_body_temp_path /var/tmp/f1-g4/runtime/proxy/client-body;
+    proxy_temp_path /var/tmp/f1-g4/runtime/proxy/proxy-temp;
+    fastcgi_temp_path /var/tmp/f1-g4/runtime/proxy/fastcgi-temp;
+    uwsgi_temp_path /var/tmp/f1-g4/runtime/proxy/uwsgi-temp;
+    scgi_temp_path /var/tmp/f1-g4/runtime/proxy/scgi-temp;
+    types {
+        text/html html;
+        text/css css;
+        application/javascript js;
+        application/json json;
+        image/svg+xml svg;
+        image/png png;
+        image/webp webp;
+        font/woff2 woff2;
+    }
+    default_type application/octet-stream;
+    upstream f1_g4_active { server 127.0.0.1:55447; }
+    server {
+        listen 127.0.0.1:55449;
+        server_name localhost;
+        location = /api/runtime-readiness {
+            allow 127.0.0.1;
+            deny all;
+            proxy_pass http://f1_g4_active;
+            proxy_set_header X-Forwarded-For $remote_addr;
+        }
+        location /api/ {
+            proxy_pass http://f1_g4_active;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_next_upstream off;
+            proxy_read_timeout 10s;
+            proxy_no_cache 1;
+        }
+        root /var/tmp/f1-g4/candidate/apps/web/dist;
+        location /assets/ { add_header Cache-Control "public, max-age=31536000, immutable"; }
+        location / { add_header Cache-Control "no-cache"; try_files $uri $uri/ /index.html; }
+    }
+}

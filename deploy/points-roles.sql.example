@@ -1,0 +1,7 @@
+-- Reviewed maintenance role applies migrations/activations. Never run as the app role.
+-- No activation rows are shipped. Do not copy test activation timestamps to production.
+GRANT SELECT ON points_rule_activations TO f1_app;
+GRANT SELECT, INSERT, UPDATE ON points_balances TO f1_app;
+GRANT SELECT, INSERT ON points_ledger TO f1_app;
+REVOKE UPDATE, DELETE, TRUNCATE ON points_ledger FROM f1_app;
+REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON points_rule_activations FROM f1_app;

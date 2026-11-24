@@ -1,0 +1,6 @@
+-- Apply only to the separately approved migrated target with maintenance credentials.
+GRANT SELECT, INSERT, UPDATE ON quick_active_slots TO f1_app;
+GRANT DELETE ON quick_active_slots TO f1_app;
+GRANT SELECT, INSERT ON mode_requests, daily_v2_challenges, daily_v2_guesses TO f1_app;
+GRANT SELECT, INSERT, UPDATE ON daily_v2_entries TO f1_app;
+-- Keep existing game/identity/points grants; no DDL, history DELETE, ledger UPDATE/DELETE.

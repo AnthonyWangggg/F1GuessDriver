@@ -1,6 +1,6 @@
 {
-  "lockSha256": "665a2dcd5a0ae99ec36339ee16d7ef2279c25ee1d23c6edf0892db162bc757ea",
-  "noticesSha256": "6da3cfb61ede7b8b7c82bd82d64bb330334ad349903d9f940a96ea4cfd81d9b2",
+  "lockSha256": "70ec722148538b101278fd9a9c0217d93bc8fb3f67b50f3fc2e077d6cc5e4167",
+  "noticesSha256": "1f0be7946030730011ebe05ed2971198188acb35971fef2e09f8c8a8854234a6",
   "packages": [
     {
       "name": "@asamuzakjp/css-color",
@@ -24,19 +24,19 @@
     },
     {
       "name": "@asamuzakjp/dom-selector",
-      "versions": ["9.2.4"],
+      "versions": ["10.0.5"],
       "license": "MIT",
       "homepage": "https://github.com/asamuzaK/domSelector#readme",
       "evidence": [
         {
-          "version": "9.2.4",
+          "version": "10.0.5",
           "file": "LICENSE",
           "sha256": "7cdf9db3b91cc77b9ec947ad0c7126140f00e34528b67c3a58e9fc1a98055e14"
         }
       ],
       "versionReviews": [
         {
-          "version": "9.2.4",
+          "version": "10.0.5",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         }
@@ -3471,29 +3471,29 @@
     },
     {
       "name": "fast-uri",
-      "versions": ["3.1.8", "4.2.1"],
+      "versions": ["3.1.9", "4.2.3"],
       "license": "BSD-3-Clause",
       "homepage": "https://github.com/fastify/fast-uri",
       "evidence": [
         {
-          "version": "3.1.8",
+          "version": "3.1.9",
           "file": "LICENSE",
           "sha256": "b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786"
         },
         {
-          "version": "4.2.1",
+          "version": "4.2.3",
           "file": "LICENSE",
           "sha256": "b010b0dfdfdb23d7396e03b82cd4621fc9bb8f95d6b0aea70b9c24e12074c786"
         }
       ],
       "versionReviews": [
         {
-          "version": "3.1.8",
+          "version": "3.1.9",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         },
         {
-          "version": "4.2.1",
+          "version": "4.2.3",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         }
@@ -3501,19 +3501,19 @@
     },
     {
       "name": "fastify",
-      "versions": ["5.12.5"],
+      "versions": ["5.12.7"],
       "license": "MIT",
       "homepage": "https://fastify.dev/",
       "evidence": [
         {
-          "version": "5.12.5",
+          "version": "5.12.7",
           "file": "LICENSE",
           "sha256": "23c91863859171455a536380991b4160fee4e19e2d8dc353ecf7143cc4e53ca2"
         }
       ],
       "versionReviews": [
         {
-          "version": "5.12.5",
+          "version": "5.12.7",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         }
@@ -4091,19 +4091,19 @@
     },
     {
       "name": "jsdom",
-      "versions": ["30.1.2"],
+      "versions": ["30.1.3"],
       "license": "MIT",
       "homepage": "https://github.com/jsdom/jsdom#readme",
       "evidence": [
         {
-          "version": "30.1.2",
+          "version": "30.1.3",
           "file": "LICENSE.txt",
           "sha256": "242d37e7cab25cbafc36cc973ee88f9345fddf066afe4f72b7ac3d9ad4e24cce"
         }
       ],
       "versionReviews": [
         {
-          "version": "30.1.2",
+          "version": "30.1.3",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         }
@@ -6399,19 +6399,19 @@
     },
     {
       "name": "undici",
-      "versions": ["8.11.2"],
+      "versions": ["8.12.3"],
       "license": "MIT",
       "homepage": "https://undici.nodejs.org",
       "evidence": [
         {
-          "version": "8.11.2",
+          "version": "8.12.3",
           "file": "LICENSE",
           "sha256": "a6db8096b2707bc0102d256917d4d33f298ba36d8c3f25de067a2b5bb379db27"
         }
       ],
       "versionReviews": [
         {
-          "version": "8.11.2",
+          "version": "8.12.3",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         }
@@ -6864,19 +6864,19 @@
     },
     {
       "name": "zod",
-      "versions": ["4.6.5"],
+      "versions": ["4.6.7"],
       "license": "MIT",
       "homepage": "https://zod.dev",
       "evidence": [
         {
-          "version": "4.6.5",
+          "version": "4.6.7",
           "file": "LICENSE",
           "sha256": "3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8"
         }
       ],
       "versionReviews": [
         {
-          "version": "4.6.5",
+          "version": "4.6.7",
           "status": "confirmed",
           "reason": "Installed release license/notice text inspected; no missing version may be masked by another release."
         }

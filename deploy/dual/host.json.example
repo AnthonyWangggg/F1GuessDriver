@@ -1,0 +1,7 @@
+{
+  "nodeVersion": "24.12.0",
+  "nodeSha256": "REPLACE_WITH_REVIEWED_NODE_BINARY_SHA256",
+  "pgPort": 5432,
+  "stg": { "port": 3100, "domain": "stg.f1driverguess.online", "syntheticSessionApproval": "" },
+  "prod": { "port": 3000, "domain": "f1driverguess.online", "syntheticSessionApproval": "" }
+}

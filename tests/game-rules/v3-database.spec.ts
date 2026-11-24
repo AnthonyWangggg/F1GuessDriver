@@ -18,7 +18,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
       const publication = JSON.parse(await readFile('reports/p3.3/publication.json', 'utf8')) as {
         version: string
       }
-      let app = buildApp({ database: db.db, chooseIndex: () => 0 })
+      let app = buildApp({ legacyIdentityFixture: true, database: db.db, chooseIndex: () => 0 })
       const headers = { 'sec-fetch-site': 'same-origin', 'x-f1-game-contract': 'v3' }
       try {
         const [metadata] = await db.db
@@ -49,7 +49,11 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
           alonso.stages.filter((s) => s.constructorId === 'jolpica:constructor:renault'),
         ).toHaveLength(2)
         for (const version of ['nonexistent-v3-test', 'f1-2026-10-08-2190d6c32d9f664f']) {
-          const unavailable = buildApp({ database: db.db, datasetVersion: version })
+          const unavailable = buildApp({
+            legacyIdentityFixture: true,
+            database: db.db,
+            datasetVersion: version,
+          })
           try {
             const response = await unavailable.inject({
               method: 'POST',
@@ -155,6 +159,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
         for (const version of [DEFAULT_DATASET_VERSION, 'f1-2026-10-08-2190d6c32d9f664f']) {
           await app.close()
           app = buildApp({
+            legacyIdentityFixture: true,
             database: db.db,
             datasetVersion: version,
             allowLegacyCreation: true,
@@ -190,7 +195,7 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)(
             ],
           ).toBeDefined()
           await app.close()
-          app = buildApp({ database: db.db })
+          app = buildApp({ legacyIdentityFixture: true, database: db.db })
           expect(
             (await app.inject({ url: `/api/games/${game.id}`, headers: h })).json().guesses,
           ).toEqual(before.guesses)

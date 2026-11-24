@@ -28,4 +28,4 @@ Indy 交叉事实：[官方 1950 起步表](https://www.formula1.com/en/results/
 
 本阶段不下载国旗图片或真实 constructor Logo，未发布任何图形资产，也未开展阶段 C。
 
-后续用户已批准阶段 B：原审核配置及来源文件不变，逐场证据持久化于pole_audits/race_poles，并发布独立v2快照；见 [阶段B报告](../../P3.2-B-development-report.md)。阶段 C 尚未批准。
+阶段 B 将逐场证据保存为 `pole_audits` 和 `race_poles` 记录，并发布独立 v2 快照。版本及接口契约见 [游戏 API](../../docs/P2-api.md)。

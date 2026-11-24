@@ -1,0 +1,23 @@
+{
+  "format": "first-prod-v1",
+  "version": "7e46530e99a6475f77aa5d9028e8620fc9d5656b-e7d2cb53eb47b073a97ce5c2e7d5f7c375c77509ced96d6611e0277ba764dea7",
+  "artifactSha256": "e7d2cb53eb47b073a97ce5c2e7d5f7c375c77509ced96d6611e0277ba764dea7",
+  "lockSha256": "70ec722148538b101278fd9a9c0217d93bc8fb3f67b50f3fc2e077d6cc5e4167",
+  "approvals": {
+    "prepare-prod": "PROD01B-PREPARE",
+    "init-prod": "PROD01B-INIT",
+    "points-activation": "PROD01B-POINTS",
+    "synthetic-smoke": "PROD01B-SYNTHETIC",
+    "internal-edge": "PROD01B-INTERNAL-EDGE",
+    "activate-internal": "PROD01B-ACTIVATE",
+    "recover-internal": "SEPARATE-INTERNAL-RECOVERY",
+    "cutover": "SEPARATE-PUBLIC-CUTOVER",
+    "recover-edge": "SEPARATE-EDGE-RECOVERY",
+    "rollback-edge": "SEPARATE-MAINTENANCE-ROLLBACK"
+  },
+  "backupReceipt": "/etc/f1-dual/prod-review/backup-proof.json",
+  "backupReceiptSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "publicationReceipt": "/etc/f1-dual/prod-review/publication-proof.json",
+  "publicationReceiptSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "rollbackDataWindowApproval": ""
+}

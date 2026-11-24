@@ -1,8 +1,10 @@
 import { execFileSync, spawn } from 'node:child_process'
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
+import { fullFixtures } from './lib/full-fixtures.js'
 import {
   changedFiles,
+  gitEquivalentComparison,
   digest,
   plan,
   runStep,
@@ -105,7 +107,18 @@ if (args[0] === 'baseline') {
     beforePackage = baseline.package
     source = 'explicit-local-baseline'
   }
-  const files = changedFiles(before, current)
+  const tracked = execFileSync('git', ['ls-files', '-z']).toString().split('\0').filter(Boolean)
+  const gitChanged = new Set(
+    source === 'HEAD'
+      ? execFileSync('git', ['diff', 'HEAD', '--name-only', '--no-renames', '-z'])
+          .toString()
+          .split('\0')
+          .filter(Boolean)
+      : [],
+  )
+  const comparisonCurrent =
+    source === 'HEAD' ? gitEquivalentComparison(before, current, tracked, gitChanged) : current
+  const files = changedFiles(before, comparisonCurrent, gitChanged)
   const stripScripts = (pkg: Record<string, unknown>) =>
     Object.fromEntries(Object.entries(pkg).filter(([key]) => key !== 'scripts'))
   const scriptsOnly =
@@ -216,10 +229,18 @@ if (args[0] === 'baseline') {
                   resolve(1)
                   return
                 }
+                let env = process.env
+                try {
+                  if (level === 'full') env = fullFixtures(step.id, env)
+                } catch (error) {
+                  console.error(error instanceof Error ? error.message : 'Invalid test fixture')
+                  resolve(1)
+                  return
+                }
                 const invocation = pnpmInvocation(cli, process.execPath, step.args)
                 const child = spawn(invocation.command, invocation.args, {
                   stdio: 'inherit',
-                  env: process.env,
+                  env,
                 })
                 child.on('error', () => resolve(1))
                 child.on('exit', (code) => resolve(code ?? 1))

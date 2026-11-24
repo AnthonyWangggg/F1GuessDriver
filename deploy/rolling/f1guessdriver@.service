@@ -19,7 +19,9 @@ Restart=on-failure
 RestartSec=5
 TimeoutStopSec=20
 KillSignal=SIGTERM
-MemoryMax=256M
+# G1 provisional budget: Argon2 64MiB x 1, bounded queue. Linux cgroup validation pending.
+MemoryHigh=384M
+MemoryMax=512M
 CPUQuota=100%
 TasksMax=64
 UMask=0077

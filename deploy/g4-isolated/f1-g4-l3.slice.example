@@ -1,0 +1,7 @@
+# Candidate resource budget only. No installation is authorized by this file.
+[Slice]
+CPUQuota=100%
+MemoryHigh=1280M
+MemoryMax=1536M
+MemorySwapMax=0
+TasksMax=256

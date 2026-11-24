@@ -1,0 +1,7 @@
+# REVIEW ONLY: replace the complete site routing in a separately approved maintenance window.
+# Do not include alongside API/asset locations: old workers must drain before backup/migration.
+# Preserve existing TLS/security configuration. Never proxy a maintenance request to either slot.
+add_header Cache-Control "no-store" always;
+add_header Retry-After "60" always;
+add_header X-F1-Upgrade-Maintenance "frozen" always;
+return 503;

@@ -1,3 +1,4 @@
+import { ownerGuard } from '../identity/access.js'
 import { createHash } from 'node:crypto'
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import {
@@ -26,16 +27,16 @@ export function registerMatchingRoutes(
 ) {
   const limiter = new RateLimiter(),
     empty = z.object({}).strict()
-  const data = () => {
+  const data = (request: FastifyRequest) => {
     if (!service) throw new ApiError(503, 'MATCH_DISABLED', 'Random matching is not enabled')
-    return service
+    return service.withGuard(ownerGuard(request))
   }
   const mutation = (request: FastifyRequest, reply: FastifyReply) => {
     checkOrigin(request, origins)
     limiter.consume('guess', request.ip, reply)
     if (request.headers['x-f1-match-contract'] !== MATCH_CONTRACT)
       throw new ApiError(426, 'MATCH_CLIENT_UPGRADE_REQUIRED', 'Reload the match client')
-    return data()
+    return data(request)
   }
   const cached = (request: FastifyRequest, reply: FastifyReply, owner: string, body: unknown) => {
     const etag =
@@ -56,7 +57,7 @@ export function registerMatchingRoutes(
     durationSeconds: 600,
   }))
   app.get('/api/matchmaking/state', async (request, reply) => {
-    const api = data()
+    const api = data(request)
     limiter.consume(
       'search',
       request.ip + ':' + (ownerIdentity(request)?.hash ?? 'anonymous'),
@@ -83,7 +84,7 @@ export function registerMatchingRoutes(
     return api.cancel(owner, input.idempotencyKey)
   })
   app.get('/api/matches/:id', async (request, reply) => {
-    const api = data()
+    const api = data(request)
     limiter.consume(
       'search',
       request.ip + ':' + (ownerIdentity(request)?.hash ?? 'anonymous'),

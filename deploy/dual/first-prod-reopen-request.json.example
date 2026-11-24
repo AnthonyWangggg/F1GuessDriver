@@ -1,0 +1,8 @@
+{
+  "format": "first-prod-reopen-v1",
+  "planSha256": "REPLACE_WITH_CURRENT_BOUND_PLAN_SHA256",
+  "authorizationSha256": "REPLACE_WITH_CURRENT_AUTHORIZATION_SHA256",
+  "stateSha256": "REPLACE_WITH_CURRENT_INTERNAL_READY_STATE_SHA256",
+  "identitySha256": "REPLACE_WITH_REBIND_IDENTITY_OUTPUT",
+  "approvalReference": ""
+}

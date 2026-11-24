@@ -21,7 +21,12 @@ describe.skipIf(!process.env.TEST_DATABASE_URL || !process.env.LOCALIZATION_LEGA
         dailyEnabled: true,
       }
       const legacy = old.buildApp(options),
-        current = buildApp({ ...options, matchingEnabled: true, matchingSweepIntervalMs: 0 })
+        current = buildApp({
+          legacyIdentityFixture: true,
+          ...options,
+          matchingEnabled: true,
+          matchingSweepIntervalMs: 0,
+        })
       try {
         const created = await legacy.inject({
           method: 'POST',

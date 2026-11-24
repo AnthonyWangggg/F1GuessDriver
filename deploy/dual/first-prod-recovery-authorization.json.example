@@ -1,0 +1,11 @@
+{
+  "format": "first-prod-authorization-v1",
+  "planSha256": "REPLACE_WITH_UNCHANGED_PUBLIC_TRANSACTION_PLAN_SHA256",
+  "grants": {},
+  "rollbackDataWindowApproval": "",
+  "edgeRecoveryBackup": {
+    "path": "/etc/f1-dual/prod-review/edge-recovery-backup.json",
+    "sha256": "REPLACE_WITH_NEW_REAL_BACKUP_PROOF_SHA256",
+    "approvalReference": ""
+  }
+}

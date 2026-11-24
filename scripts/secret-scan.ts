@@ -18,13 +18,16 @@ const tracked = git('ls-files', '-z').split('\0').filter(Boolean)
 const candidates = git('ls-files', '--cached', '--others', '--exclude-standard', '-z')
   .split('\0')
   .filter(Boolean)
+const deleted = new Set(git('ls-files', '--deleted', '-z').split('\0').filter(Boolean))
 for (const file of new Set([...tracked, ...candidates])) {
-  const size = (await stat(file)).size
+  // An unstaged deletion still has an index blob that can be committed.
+  const indexPath = deleted.has(file) ? `:${file}` : undefined
+  const size = indexPath ? Number(git('cat-file', '-s', indexPath)) : (await stat(file)).size
   if (size > 16 * 1024 * 1024) {
     findings.push({ severity: 'BLOCKER', file, rule: 'oversized-unscanned-file' })
     continue
   }
-  scan(file, (await readFile(file)).toString())
+  scan(file, indexPath ? git('show', indexPath) : (await readFile(file)).toString())
 }
 const commits = git('rev-list', '--all').trim().split('\n').filter(Boolean)
 let historyFiles = 0

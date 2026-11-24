@@ -1,5 +1,5 @@
 import { randomInt } from 'node:crypto'
-import { and, eq, asc, desc } from 'drizzle-orm'
+import { and, eq, asc, desc, sql } from 'drizzle-orm'
 import {
   type Database,
   drivers,
@@ -28,6 +28,7 @@ import {
 import { compareDrivers } from '../game/rules.js'
 import { answerPool, DIFFICULTIES, beginnerGroups, selectBeginner } from '../game/difficulty.js'
 import { ApiError } from './errors.js'
+import type { OwnerGuard, IdentityTx } from '../identity/access.js'
 
 type Reader = Pick<Database, 'select'>
 type Session = typeof gameSessions.$inferSelect
@@ -64,7 +65,17 @@ export class GameService {
     private readonly defaultVersion?: string,
     private readonly chooseIndex: (length: number) => number = randomInt,
     private readonly allowLegacyCreation = false,
+    private readonly guard?: OwnerGuard,
   ) {}
+  withGuard(guard?: OwnerGuard) {
+    return new GameService(
+      this.db,
+      this.defaultVersion,
+      this.chooseIndex,
+      this.allowLegacyCreation,
+      guard,
+    )
+  }
   async version(reader: Reader, version?: string) {
     const [row] = await reader
       .select()
@@ -169,9 +180,47 @@ export class GameService {
     }
     return rows.map((row) => snapshotAttributesSchema.parse(row))
   }
-  async create(ownerHash: string, difficulty: Difficulty) {
-    return this.db.transaction(
+  async chooseAnswer(
+    reader: Reader,
+    metadata: typeof datasetVersions.$inferSelect,
+    difficulty: Difficulty,
+    excluded: readonly string[] = [],
+  ) {
+    const rows = await this.eligibleSnapshots(reader, metadata)
+    if (difficulty === 'beginner' && metadata.rulesVersion === 'v3') {
+      const groups = this.beginner(rows, Number(metadata.statsAsOf.slice(0, 4)))
+      return selectBeginner(
+        {
+          modern: groups.modern.filter((r) => !excluded.includes(r.driverId)),
+          legend: groups.legend.filter((r) => !excluded.includes(r.driverId)),
+        },
+        this.chooseIndex,
+      ).driverId
+    }
+    const pool = answerPool(rows, difficulty).filter((r) => !excluded.includes(r.driverId))
+    if (!pool.length) throw new ApiError(503, 'ANSWER_POOL_EMPTY', 'No eligible distinct answer')
+    const index = this.chooseIndex(pool.length)
+    if (!Number.isInteger(index) || index < 0 || index >= pool.length)
+      throw new Error('Invalid server selection')
+    return pool[index]!.driverId
+  }
+  private run<T>(
+    tx: IdentityTx | undefined,
+    run: (tx: IdentityTx) => Promise<T>,
+    options?: Parameters<Database['transaction']>[1],
+  ) {
+    return tx ? run(tx) : this.db.transaction(run, options)
+  }
+  async create(
+    ownerHash: string,
+    difficulty: Difficulty,
+    transaction?: IdentityTx,
+    quickPrincipalId?: string,
+  ) {
+    return this.run(
+      transaction,
       async (tx) => {
+        await this.guard?.(tx, ownerHash)
         const metadata = await this.version(tx, this.defaultVersion)
         if (metadata.rulesVersion !== 'v3' && !this.allowLegacyCreation)
           throw new ApiError(
@@ -179,25 +228,7 @@ export class GameService {
             'DATASET_UNAVAILABLE',
             'New games require a valid v3 snapshot; no legacy fallback',
           )
-        const snapshots = await this.eligibleSnapshots(tx, metadata)
-        const groups =
-          metadata.rulesVersion === 'v3' && difficulty === 'beginner'
-            ? this.beginner(snapshots, Number(metadata.statsAsOf.slice(0, 4)))
-            : null
-        const pool = groups
-          ? [...groups.modern, ...groups.legend]
-          : answerPool(snapshots, difficulty)
-        if (!pool.length)
-          throw new ApiError(
-            503,
-            'ANSWER_POOL_EMPTY',
-            'No eligible answers available for this difficulty',
-          )
-        const index = groups
-          ? pool.indexOf(selectBeginner(groups, this.chooseIndex))
-          : this.chooseIndex(pool.length)
-        if (!Number.isInteger(index) || index < 0 || index >= pool.length)
-          throw new Error('Invalid server answer selection')
+        const answerDriverId = await this.chooseAnswer(tx, metadata, difficulty)
         const [session] = await tx
           .insert(gameSessions)
           .values({
@@ -206,37 +237,57 @@ export class GameService {
             rulesVersion: metadata.rulesVersion,
             status: metadata.rulesVersion !== 'v1' ? 'playing' : 'active',
             datasetVersion: metadata.version,
-            answerDriverId: pool[index]!.driverId,
-            maxAttempts: DIFFICULTIES[difficulty].maxAttempts,
+            answerDriverId,
+            maxAttempts: quickPrincipalId ? 8 : DIFFICULTIES[difficulty].maxAttempts,
+            modeContract: quickPrincipalId ? 'quick-v2' : 'legacy',
+            principalId: quickPrincipalId ?? null,
           })
           .returning()
         if (!session) throw new Error('Game insert failed')
         return this.response(tx, session)
       },
-      { isolationLevel: 'repeatable read' },
+      { isolationLevel: this.guard ? 'read committed' : 'repeatable read' },
     )
   }
-  async get(ownerHash: string, id: string) {
-    return this.db.transaction(
+  async get(ownerHash: string, id: string, transaction?: IdentityTx, quickOnly = false) {
+    return this.run(
+      transaction,
       async (tx) => {
+        await this.guard?.(tx, ownerHash)
         const [session] = await tx
           .select()
           .from(gameSessions)
-          .where(and(eq(gameSessions.id, id), eq(gameSessions.ownerHash, ownerHash)))
+          .where(
+            and(
+              eq(gameSessions.id, id),
+              eq(gameSessions.ownerHash, ownerHash),
+              quickOnly ? eq(gameSessions.modeContract, 'quick-v2') : undefined,
+            ),
+          )
+          .for('share')
         if (!session) throw new ApiError(404, 'GAME_NOT_FOUND', 'Game not found')
         return this.response(tx, session)
       },
-      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+      { isolationLevel: this.guard ? 'read committed' : 'repeatable read' },
     )
   }
-  async guess(ownerHash: string, id: string, driverId: string) {
-    return this.db.transaction(async (tx) => {
+  async guess(
+    ownerHash: string,
+    id: string,
+    driverId: string,
+    transaction?: IdentityTx,
+    allowQuick = false,
+  ) {
+    return this.run(transaction, async (tx) => {
+      await this.guard?.(tx, ownerHash)
       const [session] = await tx
         .select()
         .from(gameSessions)
         .where(and(eq(gameSessions.id, id), eq(gameSessions.ownerHash, ownerHash)))
         .for('update')
       if (!session) throw new ApiError(404, 'GAME_NOT_FOUND', 'Game not found')
+      if (session.modeContract === 'quick-v2' && !allowQuick)
+        throw new ApiError(426, 'MODE_CONTRACT_REQUIRED', 'Use quick-v2 routes')
       if (!isPlaying(session.status))
         throw new ApiError(409, 'GAME_FINISHED', 'This game has already ended')
       await this.version(tx, session.datasetVersion)
@@ -270,7 +321,12 @@ export class GameService {
       })
       await tx
         .update(gameSessions)
-        .set({ attemptsUsed, status, endedAt: isPlaying(status) ? null : new Date() })
+        .set({
+          attemptsUsed,
+          status,
+          revision: sql`revision+1`,
+          endedAt: isPlaying(status) ? null : new Date(),
+        })
         .where(eq(gameSessions.id, id))
       return guessResponseSchema.parse({
         gameId: id,
@@ -285,20 +341,23 @@ export class GameService {
       })
     })
   }
-  async reveal(ownerHash: string, id: string) {
-    return this.db.transaction(async (tx) => {
+  async reveal(ownerHash: string, id: string, transaction?: IdentityTx, allowQuick = false) {
+    return this.run(transaction, async (tx) => {
+      await this.guard?.(tx, ownerHash)
       const [session] = await tx
         .select()
         .from(gameSessions)
         .where(and(eq(gameSessions.id, id), eq(gameSessions.ownerHash, ownerHash)))
         .for('update')
       if (!session) throw new ApiError(404, 'GAME_NOT_FOUND', 'Game not found')
+      if (session.modeContract === 'quick-v2' && !allowQuick)
+        throw new ApiError(426, 'MODE_CONTRACT_REQUIRED', 'Use quick-v2 routes')
       if (!isPlaying(session.status))
         throw new ApiError(409, 'GAME_FINISHED', 'This game has already ended')
       await this.version(tx, session.datasetVersion)
       const [ended] = await tx
         .update(gameSessions)
-        .set({ status: 'revealed', endedAt: new Date() })
+        .set({ status: 'revealed', revision: sql`revision+1`, endedAt: new Date() })
         .where(eq(gameSessions.id, id))
         .returning()
       if (!ended) throw new Error('Reveal update failed')
@@ -396,7 +455,12 @@ export class GameService {
     )
   }
 
-  private async career(reader: Reader, session: Session, driverId: string, years: boolean) {
+  private async career(
+    reader: Reader,
+    session: Pick<Session, 'id' | 'datasetVersion'>,
+    driverId: string,
+    years: boolean,
+  ) {
     const [row] = await reader
       .select()
       .from(driverCareerTimelines)
@@ -423,13 +487,51 @@ export class GameService {
       })),
     }
   }
+  /** Caller authorizes the resource and confirms its immutable revealed state. */
+  async revealedProfile(
+    tx: IdentityTx,
+    session: Pick<Session, 'id' | 'datasetVersion' | 'answerDriverId' | 'rulesVersion'> & {
+      status: 'won' | 'lost' | 'revealed'
+    },
+  ) {
+    const metadata = await this.version(tx, session.datasetVersion)
+    const stats = await this.snapshot(tx, session.answerDriverId, session.datasetVersion)
+    const names = new Map((await tx.select().from(constructors)).map((c) => [c.id, c.name]))
+    return answerProfileSchema.parse({
+      gameId: session.id,
+      datasetVersion: session.datasetVersion,
+      rulesVersion: session.rulesVersion,
+      statsAsOf: metadata.statsAsOf,
+      status: session.status,
+      driver: await this.person(tx, session.answerDriverId),
+      statistics: {
+        nationalityCode: stats.nationalityCode,
+        debutYear: stats.debutYear,
+        championships: stats.championships,
+        wins: stats.wins,
+        podiums: stats.podiums,
+        raceStarts: stats.raceStarts,
+        polePositions: session.rulesVersion === 'v1' ? null : (stats.polePositions ?? null),
+      },
+      constructors: (stats.constructorIds ?? []).map((id) => ({
+        id,
+        name: names.get(id) ?? '名称暂不可用',
+      })),
+      timeline:
+        session.rulesVersion === 'v3'
+          ? await this.career(tx, session, session.answerDriverId, true)
+          : null,
+    })
+  }
   async answerProfile(ownerHash: string, id: string) {
     return this.db.transaction(
       async (tx) => {
+        await this.guard?.(tx, ownerHash)
         const [session] = await tx
           .select()
           .from(gameSessions)
           .where(and(eq(gameSessions.id, id), eq(gameSessions.ownerHash, ownerHash)))
+          .for('share')
         if (!session) throw new ApiError(404, 'GAME_NOT_FOUND', 'Game not found')
         if (isPlaying(session.status))
           throw new ApiError(
@@ -437,45 +539,23 @@ export class GameService {
             'ANSWER_NOT_AVAILABLE',
             'Finish this game before viewing the answer profile',
           )
-        const metadata = await this.version(tx, session.datasetVersion)
-        const stats = await this.snapshot(tx, session.answerDriverId, session.datasetVersion)
-        const names = new Map((await tx.select().from(constructors)).map((c) => [c.id, c.name]))
-        return answerProfileSchema.parse({
-          gameId: id,
-          datasetVersion: session.datasetVersion,
-          rulesVersion: session.rulesVersion,
-          statsAsOf: metadata.statsAsOf,
-          status: session.status,
-          driver: await this.person(tx, session.answerDriverId),
-          statistics: {
-            nationalityCode: stats.nationalityCode,
-            debutYear: stats.debutYear,
-            championships: stats.championships,
-            wins: stats.wins,
-            podiums: stats.podiums,
-            raceStarts: stats.raceStarts,
-            polePositions: session.rulesVersion === 'v1' ? null : (stats.polePositions ?? null),
-          },
-          constructors: (stats.constructorIds ?? []).map((id) => ({
-            id,
-            name: names.get(id) ?? '名称暂不可用',
-          })),
-          timeline:
-            session.rulesVersion === 'v3'
-              ? await this.career(tx, session, session.answerDriverId, true)
-              : null,
+        return this.revealedProfile(tx, {
+          ...session,
+          status: session.status as 'won' | 'lost' | 'revealed',
         })
       },
-      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+      { isolationLevel: this.guard ? 'read committed' : 'repeatable read' },
     )
   }
   async timeline(ownerHash: string, id: string, driverId: string) {
     return this.db.transaction(
       async (tx) => {
+        await this.guard?.(tx, ownerHash)
         const [session] = await tx
           .select()
           .from(gameSessions)
           .where(and(eq(gameSessions.id, id), eq(gameSessions.ownerHash, ownerHash)))
+          .for('share')
         if (!session) throw new ApiError(404, 'GAME_NOT_FOUND', 'Game not found')
         const [guess] = await tx
           .select()
@@ -495,7 +575,7 @@ export class GameService {
             (!isPlaying(session.status) && driverId === session.answerDriverId),
         )
       },
-      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+      { isolationLevel: this.guard ? 'read committed' : 'repeatable read' },
     )
   }
 }

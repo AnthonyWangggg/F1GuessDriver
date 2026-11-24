@@ -28,9 +28,10 @@ const secretValues = Object.entries(environment)
   .filter(([key, value]) => /DATABASE_URL|PASSWORD|SECRET|TOKEN/.test(key) && value.length >= 8)
   .map(([, value]) => value)
 const tracked = execFileSync('git', ['ls-files', '-z']).toString().split('\0').filter(Boolean)
+const deleted = new Set(execFileSync('git', ['ls-files', '--deleted', '-z']).toString().split('\0'))
 for (const file of tracked) {
   if (prohibited(file)) findings.push({ severity: 'BLOCKER', file, rule: 'forbidden-tracked-file' })
-  if ((await stat(file)).size > 10 * 1024 * 1024)
+  if (!deleted.has(file) && (await stat(file)).size > 10 * 1024 * 1024)
     findings.push({ severity: 'WARNING', file, rule: 'large-tracked-file' })
 }
 let files = 0
@@ -51,6 +52,8 @@ async function walk(directory: string) {
     files++
     if (prohibited(file))
       findings.push({ severity: 'BLOCKER', file, rule: 'forbidden-release-file' })
+    if (/^deploy\/local\/|^apps\/server\/dist\/.*\.spec\.[cm]?js$/.test(file))
+      findings.push({ severity: 'BLOCKER', file, rule: 'test-artifact-in-release' })
     const body = (await readFile(path)).toString()
     for (const rule of dataPublicationBlockers(
       file,
@@ -114,6 +117,20 @@ for (const file of [
   'data/poles/SOURCES.md',
 ])
   await stat(resolve(root, file))
+for (const file of [
+  'deploy/production.env.example',
+  'deploy/roles.sql.example',
+  'deploy/identity-roles.sql.example',
+  'deploy/identity-fresh-roles.sql.example',
+  'deploy/modes-roles.sql.example',
+  'deploy/points-roles.sql.example',
+  'deploy/points-activation.sql.example',
+  'deploy/bo3-roles.sql.example',
+  'deploy/v3-migration-owner.sql.example',
+  'deploy/v3-database-finalization.md',
+])
+  if (!(await readFile(resolve(root, file))).equals(await readFile(file)))
+    findings.push({ severity: 'BLOCKER', file, rule: 'release-runtime-config-integrity' })
 if (!validOwnMit(await readFile(resolve(root, 'LICENSE'), 'utf8')))
   findings.push({ severity: 'BLOCKER', file: 'LICENSE', rule: 'invalid-project-mit-license' })
 for (const file of ['docs/DATA-LICENSES.md', 'docs/licenses/THIRD_PARTY_NOTICES.txt'])

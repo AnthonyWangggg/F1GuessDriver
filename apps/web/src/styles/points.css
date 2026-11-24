@@ -1,0 +1,71 @@
+.points-page {
+  padding-block: 2rem 4rem;
+}
+.points-navigation {
+  flex-wrap: wrap;
+}
+.points-navigation .nav-links {
+  flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+  .points-navigation .nav-links {
+    width: 100%;
+  }
+  .points-navigation .nav-links > a:first-child {
+    display: inline;
+  }
+}
+.points-page h1,
+.points-page h2 {
+  margin-block: 1.2rem 0.8rem;
+}
+.points-page p {
+  margin-block: 0.8rem;
+}
+.points-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-block: 1rem;
+}
+.points-page button,
+.points-page input,
+.points-page select {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  color: var(--ink);
+}
+.points-page button {
+  cursor: pointer;
+}
+.points-page button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.points-table {
+  overflow-x: auto;
+  margin-block: 1rem;
+}
+.points-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.points-table th,
+.points-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+.points-table caption {
+  text-align: left;
+  font-weight: 600;
+  padding-block: 0.5rem;
+}
+.points-trend {
+  max-width: 40rem;
+  width: 100%;
+  height: auto;
+}

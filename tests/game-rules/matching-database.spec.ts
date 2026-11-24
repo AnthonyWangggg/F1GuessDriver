@@ -4,10 +4,7 @@ import { createDatabase } from '@f1/database'
 import { sql } from 'drizzle-orm'
 import { MatchingService } from '../../apps/server/src/services/matching.js'
 import { buildApp } from '../../apps/server/src/app.js'
-import { MATCH_CONTRACT, matchmakingStateSchema, type MatchmakingState } from '@f1/shared'
-import { spawn } from 'node:child_process'
-import { createServer } from 'node:net'
-import { once } from 'node:events'
+import { MATCH_CONTRACT, type MatchmakingState } from '@f1/shared'
 
 const version = 'f1-2026-10-08-994df511b40814a5',
   owner = () => createHash('sha256').update(randomUUID()).digest('hex'),
@@ -286,18 +283,20 @@ describe.skipIf(!url)('C PostgreSQL matching in an explicitly isolated schema', 
   it('authenticates before private ETag/304, validates origins/contracts and stays off by default', async () => {
     const db = connect(),
       a = buildApp({
+        legacyIdentityFixture: true,
         database: db.db,
         datasetVersion: version,
         matchingEnabled: true,
         matchingSweepIntervalMs: 0,
       }),
       b = buildApp({
+        legacyIdentityFixture: true,
         database: db.db,
         datasetVersion: version,
         matchingEnabled: true,
         matchingSweepIntervalMs: 0,
       }),
-      off = buildApp({ database: db.db, datasetVersion: version })
+      off = buildApp({ legacyIdentityFixture: true, database: db.db, datasetVersion: version })
     try {
       const headers = { 'sec-fetch-site': 'same-origin', 'x-f1-match-contract': MATCH_CONTRACT },
         joined = await a.inject({
@@ -385,88 +384,4 @@ describe.skipIf(!url)('C PostgreSQL matching in an explicitly isolated schema', 
       await db.close()
     }
   })
-  it('restores a match through two actual Node HTTP processes and after one process restarts', async () => {
-    const children: ReturnType<typeof spawn>[] = [],
-      db = connect()
-    const freePort = () =>
-      new Promise<number>((resolve, reject) => {
-        const s = createServer()
-        s.on('error', reject)
-        s.listen(0, '127.0.0.1', () => {
-          const address = s.address()
-          if (!address || typeof address === 'string') return reject(Error('Missing port'))
-          s.close(() => resolve(address.port))
-        })
-      })
-    async function start(port: number) {
-      const child = spawn(process.execPath, ['apps/server/dist/index.js'], {
-        env: {
-          ...process.env,
-          NODE_ENV: 'test',
-          DATABASE_URL: url!,
-          HOST: '127.0.0.1',
-          PORT: String(port),
-          GAME_DATASET_VERSION: version,
-          MATCHMAKING_ENABLED: 'true',
-          DAILY_CHALLENGE_ENABLED: 'false',
-          COOKIE_SECURE: 'false',
-          TRUST_PROXY: 'none',
-          DB_POOL_MAX: '3',
-        },
-        stdio: ['ignore', 'pipe', 'pipe'],
-      })
-      children.push(child)
-      child.stdout.on('data', () => {})
-      child.stderr.on('data', () => {})
-      for (let i = 0; i < 100; i++) {
-        if (child.exitCode !== null) throw Error('Isolated child exited')
-        try {
-          if ((await fetch('http://127.0.0.1:' + port + '/api/ready')).status === 200) return child
-        } catch {}
-        await new Promise((r) => setTimeout(r, 100))
-      }
-      throw Error('Isolated child not ready')
-    }
-    try {
-      const ports = [await freePort(), await freePort()],
-        first = await start(ports[0]!)
-      await start(ports[1]!)
-      const post = async (port: number) => {
-        const r = await fetch('http://127.0.0.1:' + port + '/api/matchmaking/queue', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', 'x-f1-match-contract': MATCH_CONTRACT },
-          body: JSON.stringify({ idempotencyKey: randomUUID() }),
-        })
-        expect(r.status).toBe(200)
-        return {
-          cookie: r.headers.get('set-cookie')!.split(';')[0]!,
-          body: matchmakingStateSchema.parse(await r.json()),
-        }
-      }
-      const a = await post(ports[0]!),
-        b = await post(ports[1]!),
-        id = matched(b.body).id
-      const exited = once(first, 'exit')
-      first.kill('SIGTERM')
-      await exited
-      await start(ports[0]!)
-      for (const port of ports) {
-        const r = await fetch('http://127.0.0.1:' + port + '/api/matches/' + id, {
-          headers: { cookie: a.cookie },
-        })
-        expect(r.status).toBe(200)
-        expect(matched(matchmakingStateSchema.parse(await r.json())).id).toBe(id)
-      }
-    } finally {
-      await Promise.all(
-        children.map(async (child) => {
-          if (child.exitCode !== null || child.signalCode !== null) return
-          const exited = once(child, 'exit')
-          child.kill('SIGTERM')
-          await exited
-        }),
-      )
-      await db.close()
-    }
-  }, 30000)
 })

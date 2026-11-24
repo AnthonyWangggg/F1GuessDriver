@@ -15,6 +15,7 @@ main(() =>
     const results = []
     for (const version of versions) {
       let app = buildApp({
+        legacyIdentityFixture: true,
         database: db,
         datasetVersion: version,
         allowLegacyCreation: version !== versions[2],
@@ -81,7 +82,7 @@ main(() =>
         assert.equal(profile.timeline !== null, profile.rulesVersion === 'v3')
         assert.equal((await call(path, undefined, 'f1_player=' + 'f'.repeat(64))).status, 404)
         await app.close()
-        app = buildApp({ database: db })
+        app = buildApp({ legacyIdentityFixture: true, database: db })
         await start()
         const resumed = answerProfileSchema.parse((await call(path, undefined, owner)).body)
         assert.deepEqual(resumed, profile)

@@ -1,0 +1,147 @@
+:root {
+  --canvas: #fafaf5;
+  --ink: #1a1a2e;
+  --surface: #fff;
+  --racing-red: #e63946;
+  --opponent-blue: #4ea8de;
+  --points-gold: #f5c542;
+  --red-ink: #a51f30;
+  --blue-ink: #14567d;
+  --green-ink: #12613b;
+  --muted-ink: #58586a;
+  --surface-muted: #f0f0e9;
+  --surface-red: #fff0f1;
+  --surface-blue: #ecf6fc;
+  --surface-gold: #fff8db;
+  --calendar-surface: #fff8e8;
+  --profile-surface: var(--surface-gold);
+  --line: #b6b6bd;
+  --stroke-strong: 3px solid var(--edge);
+  --stroke-control: 2px solid var(--edge);
+  --stroke-data: 1px solid var(--line);
+  --shadow-card: 5px 5px 0 var(--shadow-color);
+  --shadow-pressed: 1px 1px 0 var(--shadow-color);
+  --radius-card: 12px;
+  --radius-control: 7px;
+  --focus-ring: 0 0 0 3px var(--surface), 0 0 0 6px var(--ink);
+  --space-page: clamp(1rem, 3vw, 2.5rem);
+  --page-max: 1280px;
+  --sticky-offset: calc(var(--navigation-height, 86px) + 12px);
+  --visual-height: 100dvh;
+  --visual-top: 0px;
+  --motion-fast: 140ms;
+  --f1-red: var(--racing-red);
+  --f1-black: var(--ink);
+  --f1-dark-gray: #38384a;
+  --f1-white: var(--surface);
+  --f1-light-gray: var(--surface-muted);
+  --border: var(--line);
+  --muted: var(--muted-ink);
+  /* Existing feedback semantics and palette are preserved. */
+  --guess-correct: #16834b;
+  --guess-partial: #d99b20;
+  --guess-wrong: #666973;
+  font-family: Arial, 'Microsoft YaHei', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--canvas);
+  color-scheme: light;
+  font-synthesis: none;
+  --edge: #1a1a2e;
+  --shadow-color: #1a1a2e;
+  --on-solid: #fff;
+  --primary-hover: #a51f30;
+  --surface-success: #e6f5ec;
+  --surface-expired: #eee9e3;
+  --expired-ink: #614d43;
+  --expired-border: #b9a99e;
+  --icon-filter: none;
+  --rules-score-surface: #fff6df;
+  --calendar-zero: #e9edf1;
+  --calendar-border: #c4cad1;
+  --calendar-negative: #f3a39a;
+  --calendar-negative-border: #b45b52;
+  --calendar-light: #bbddf7;
+  --calendar-light-border: #91b9d6;
+  --calendar-medium: #5299cf;
+  --calendar-medium-border: #357bac;
+  --calendar-strong: #205886;
+  --calendar-strong-border: #19466c;
+  --calendar-future: #fff;
+  --calendar-stripe: #e6e9ec;
+  --podium-gold: #fff4d5;
+  --podium-gold-border: #d6b974;
+  --podium-silver: #edf1f6;
+  --podium-silver-border: #afb9c6;
+  --podium-bronze: #f8e9df;
+  --podium-bronze-border: #cca58b;
+  --tooltip-bg: #1a1a2e;
+  --tooltip-ink: #fff;
+  --surface-lines: #1a1a2e07;
+  --backdrop: #1a1a2e80;
+  --selected-surface: #1a1a2e;
+  --selected-ink: #fff;
+}
+
+@theme inline {
+  --color-race-canvas: var(--canvas);
+  --color-race-ink: var(--ink);
+  --color-race-red: var(--racing-red);
+  --color-race-blue: var(--opponent-blue);
+  --color-race-gold: var(--points-gold);
+}
+
+@media (max-width: 767px), (max-height: 500px) {
+  :root {
+    --sticky-offset: 0px;
+  }
+}
+
+:root[data-theme='dark'] {
+  --canvas: #111823;
+  --ink: #e6edf5;
+  --surface: #1c2736;
+  --surface-muted: #263344;
+  --surface-red: #382730;
+  --surface-blue: #21384b;
+  --surface-gold: #383322;
+  --calendar-surface: #252c32;
+  --profile-surface: #302d28;
+  --line: #4e5e73;
+  --edge: #64748b;
+  --shadow-color: #080e17;
+  --muted-ink: #b5c0cf;
+  --red-ink: #ff939a;
+  --blue-ink: #91cfff;
+  --green-ink: #89dbad;
+  --surface-success: #203b30;
+  --surface-expired: #33302c;
+  --expired-ink: #d8c5b8;
+  --expired-border: #796a5e;
+  --icon-filter: brightness(0) invert(1);
+  --rules-score-surface: #383322;
+  --calendar-zero: #354254;
+  --calendar-border: #58677b;
+  --calendar-negative: #c87973;
+  --calendar-negative-border: #e9a29a;
+  --calendar-light: #486d8a;
+  --calendar-light-border: #7ca2c0;
+  --calendar-medium: #5196c6;
+  --calendar-medium-border: #81b9de;
+  --calendar-strong: #95cff6;
+  --calendar-strong-border: #bee7ff;
+  --calendar-future: #1c2736;
+  --calendar-stripe: #364152;
+  --podium-gold: #3c3423;
+  --podium-gold-border: #a68d52;
+  --podium-silver: #303947;
+  --podium-silver-border: #8290a4;
+  --podium-bronze: #3d302a;
+  --podium-bronze-border: #ae8266;
+  --tooltip-bg: #0b111b;
+  --tooltip-ink: #e6edf5;
+  --surface-lines: #e6edf50a;
+  --backdrop: #050910bd;
+  --selected-surface: #34465d;
+  --selected-ink: #e6edf5;
+  color-scheme: dark;
+}
